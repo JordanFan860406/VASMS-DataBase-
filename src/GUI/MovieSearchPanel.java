@@ -29,7 +29,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	
 	void initialize() {
 		this.setLayout(new GridBagLayout());
-		this.setBackground(Color.lightGray);
+		this.setBackground(Color.white);
 		GridBagConstraints GBC= new GridBagConstraints();
 		
 		GBC.insets = new Insets(2,2,10,10);
@@ -37,7 +37,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		GBC.gridwidth=1;
 		GBC.fill = GridBagConstraints.EAST;
 		radioButton= new JRadioButton();
-		radioButton.setBackground(Color.lightGray);
+		radioButton.setBackground(Color.white);
 		radioButton.addActionListener(this);
 		this.add(radioButton,GBC);
 		
@@ -60,13 +60,13 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		
 			if(radioButton.isSelected()){
-				this.setBackground(Color.gray);
-				radioButton.setBackground(Color.gray);
+				this.setBackground(Color.lightGray);
+				radioButton.setBackground(Color.lightGray);
 				System.out.print("11");
 			}
 			else{
-				this.setBackground(Color.LIGHT_GRAY);
-				radioButton.setBackground(Color.lightGray);
+				this.setBackground(Color.white);
+				radioButton.setBackground(Color.white);
 			}
 			this.updateUI();
 			
