@@ -97,8 +97,8 @@ public class MainFrame implements ActionListener{
 			break;
 			
 		case"下載":
-			JPanel  JPanel3=new JPanel();
-			JPanel3.setBackground(Color.lightGray);
+			JPanel  JPanel3=new DownloadPanel();
+			//JPanel3.setBackground(Color.lightGray);
 			mainPanel.removeAll();
 			mainPanel.add(JPanel3);
 			mainPanel.updateUI();
