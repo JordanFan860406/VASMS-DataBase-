@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import DB.DB_connect;
+
 public class MainFrame implements ActionListener{
 	private JFrame frame;
 	private JPanel mainPanel;
@@ -20,16 +22,18 @@ public class MainFrame implements ActionListener{
 	JButton btnMem = new JButton("會員");
 	JButton btn = new JButton("下載");
 	JLabel lb = new JLabel("               歡迎使用本系統");
+	DB_connect DB;
 	
-	public static void  main(String [] args){
+	public static void  main(String [] args) throws Exception{
 		new MainFrame();
 	}
 	
 	
 	
-	public MainFrame(){
+	public MainFrame() throws Exception{
 		initialize();
 		frame.setVisible(true);
+		DB=new DB_connect();
 	}
 	
 	void initialize() {
@@ -82,7 +86,7 @@ public class MainFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 		case"電影":
-			JPanel  JPanel1=new MoviePanel();
+			JPanel  JPanel1=new MoviePanel(DB);
 			mainPanel.removeAll();
 			mainPanel.add(JPanel1);
 			mainPanel.updateUI();

@@ -127,11 +127,11 @@ public class MemberPanel extends JPanel implements ActionListener{
 			GBC.weightx = 1;
 			GBC.weighty = 0;
 			GBC.fill = GridBagConstraints.HORIZONTAL;
-			Panel1.add(new MovieSearchPanel("會員A"),GBC);
-			Panel1.add(new MovieSearchPanel("會員B"),GBC);
+			//Panel1.add(new MovieSearchPanel("會員A"),GBC);
+			//Panel1.add(new MovieSearchPanel("會員B"),GBC);
 			
 			for(int i=0;i<10;i++){
-				Panel1.add(new MovieSearchPanel("會員"+i),GBC);
+				//Panel1.add(new MovieSearchPanel("會員"+i),GBC);
 			}
 			for(int i=0;i<7;i++){
 				Panel1.add(new EmptyPanel(),GBC);

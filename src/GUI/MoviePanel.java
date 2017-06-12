@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,6 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import DB.DB_connect;
+import Object.Movie;
+
 public class MoviePanel extends JPanel implements ActionListener{
 	
 	private JTextField tfName;
@@ -25,17 +29,20 @@ public class MoviePanel extends JPanel implements ActionListener{
 	private JComboBox year;
 	private JComboBox sort;
 	private JComboBox actor;
+	ArrayList<Movie> movieArray;
 	JButton btnNew= new JButton("新增");
 	JButton btnDelete= new JButton("刪除");
 	JPanel searchPanel;
 	JPanel MovieSearchPanel;
 	JPanel Panel;
 	JPanel Panel1;
+	DB_connect DB;
 	String [] a={"所有類型","驚悚","動作","愛情"};
 	String [] b={"所有年代","2017","2015","2000~2015"};
 	String [] c={"無","下載次數","年代(小~大)","年代(大~小)"};
-	public MoviePanel(){
+	public MoviePanel(DB_connect DB){
 		initialize();
+		this.DB=DB;
 	}
 	
 	
@@ -140,7 +147,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		
 		Panel1=new JPanel();
 		Panel1.setSize(550 ,1125);
-		JScrollPane scrollPane=new JScrollPane(Panel1,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane=new JScrollPane(Panel1,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(25,100,550 ,425);
 		Panel1.setBackground(Color.white);
 		Panel.add(scrollPane);
@@ -149,33 +156,40 @@ public class MoviePanel extends JPanel implements ActionListener{
 	}
 
 
-
+	public void search() throws Exception{
+		Panel1.removeAll();
+		Panel1.setLayout(new GridBagLayout() );
+		Panel1.setBackground(Color.lightGray);
+		GridBagConstraints GBC= new GridBagConstraints();
+		GBC.insets = new Insets(1,1,1,1);
+		GBC.gridheight = 1;
+		GBC.gridwidth = 0;
+		GBC.weightx = 1;
+		GBC.weighty = 0;
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		
+		ArrayList<Movie> movieArray=DB.searchMovie();
+		
+		for(Movie i:movieArray){
+			Panel1.add(new MovieSearchPanel(i),GBC);
+		}
+		for(int i=0;i<7;i++){
+			Panel1.add(new EmptyPanel(),GBC);
+		}
+		Panel1.updateUI();
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 		case"搜尋":
-			Panel1.removeAll();
-			Panel1.setLayout(new GridBagLayout() );
-			Panel1.setBackground(Color.lightGray);
-			GridBagConstraints GBC= new GridBagConstraints();
-			GBC.insets = new Insets(1,1,1,1);
-			GBC.gridheight = 1;
-			GBC.gridwidth = 0;
-			GBC.weightx = 1;
-			GBC.weighty = 0;
-			GBC.fill = GridBagConstraints.HORIZONTAL;
-			Panel1.add(new MovieSearchPanel("無敵鐵金剛"),GBC);
-			Panel1.add(new MovieSearchPanel("多拉A夢"),GBC);
-			
-			for(int i=0;i<1;i++){
-				Panel1.add(new MovieSearchPanel("鋼鐵人"),GBC);
+			try {
+				search();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			for(int i=0;i<7;i++){
-				Panel1.add(new EmptyPanel(),GBC);
-			}
-			Panel1.updateUI();
 			break;
 		case"新增":
 			System.out.println("新增");

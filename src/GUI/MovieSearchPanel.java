@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import Object.Movie;
+
 public class MovieSearchPanel extends JPanel implements ActionListener{
 	
 	JLabel jlName;
@@ -20,9 +22,9 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	JButton jb;
 	boolean select=false;
 	
-	public MovieSearchPanel(String name){
+	public MovieSearchPanel(Movie movie){
 		initialize();
-		this.jlName.setText("名稱:"+name);
+		this.jlName.setText("名稱:"+movie.getTitle());
 		/*btnClos1.setBounds(0, 50,50,50);
 		this.add(btnClos1);*/
 	}
@@ -43,7 +45,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		
 	
 		jlName = new JLabel();
-		jlName.setFont(new Font("新細明體",Font.PLAIN ,36));
+		jlName.setFont(new Font("新細明體",Font.PLAIN ,24));
 		GBC.gridheight=1;
 		GBC.gridwidth=1;
 		this.add(jlName,GBC);
@@ -52,7 +54,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		jb=new JButton("詳細資料");
 		GBC.gridheight=1;
 		GBC.gridwidth=1;
-		jb.setFont(new Font("新細明體",Font.PLAIN ,24));
+		jb.setFont(new Font("新細明體",Font.PLAIN ,36));
 		this.add(jb,GBC);
 	}
 

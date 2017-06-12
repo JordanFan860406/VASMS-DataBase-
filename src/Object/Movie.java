@@ -11,7 +11,27 @@ public class Movie {
 	Direct direct;
 	time publishTime;
 	
-	public Movie(String title,String ID,int charge,Company company,Direct direct,time publishTime){
+	public Movie(){
 		
+	}
+	public void setTitle(String title){
+		this.title=title;
+	}
+	public void setID(String ID){
+		this.ID=ID;
+	}
+	public void setcharge(int charge){
+		this.charge=charge;
+	}
+	public void setTime(time publishTime){
+		this.publishTime=publishTime;
+	}
+	public void setCompany(Company company){
+		this.company=company;
+	}
+	
+	
+	public String getTitle(){
+		return title;
 	}
 }
