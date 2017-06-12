@@ -1,11 +1,9 @@
 package GUI;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,23 +16,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class MoviePanel extends JPanel implements ActionListener{
-	
+public class MemberPanel extends JPanel implements ActionListener{
 	private JTextField tfName;
 	private JComboBox type;
-	private JComboBox year;
-	private JComboBox sort;
-	private JComboBox actor;
 	JButton btnNew= new JButton("新增");
 	JButton btnDelete= new JButton("刪除");
 	JPanel searchPanel;
 	JPanel MovieSearchPanel;
 	JPanel Panel;
 	JPanel Panel1;
-	String [] a={"所有類型","驚悚","動作","愛情"};
-	String [] b={"所有年代","2017","2015","2000~2015"};
-	String [] c={"無","下載次數","年代(小~大)","年代(大~小)"};
-	public MoviePanel(){
+	String [] a={"所有類型","前10付錢最多"};
+	public MemberPanel(){
 		initialize();
 	}
 	
@@ -94,28 +86,6 @@ public class MoviePanel extends JPanel implements ActionListener{
 		//btnClose.setBounds(x, y, width, height);
 		searchPanel.add(btnSearch);
 		
-		JLabel lbYear=new JLabel("電影年代 :");
-		lbYear.setFont(new Font("新細明體",Font.PLAIN ,20));
-		lbYear.setBounds(10,120,100,30);
-		searchPanel.add(lbYear);
-		
-		year=new JComboBox(b);
-		year.setFont(new Font("新細明體",Font.PLAIN ,20));
-		year.setBounds(110,120,150,30);
-		searchPanel.add(year);
-		
-		JLabel lbActor= new JLabel("演員 :");
-		lbActor.setFont(new Font("新細明體",Font.PLAIN ,20));
-		lbActor.setBounds(275,120,100,30);
-		searchPanel.add(lbActor);
-		
-		actor=new JComboBox();
-		actor.setFont(new Font("新細明體",Font.PLAIN ,20));
-		actor.setBounds(330,120,150,30);
-		searchPanel.add(actor);
-		
-		
-		
 		Panel=new JPanel();
 		Panel.setSize(600,550);
 		Panel.setBackground(Color.lightGray);
@@ -128,15 +98,6 @@ public class MoviePanel extends JPanel implements ActionListener{
 		lbAns.setBounds(10,5,600,30);
 		Panel.add(lbAns);
 		
-		JLabel lbSort=new JLabel("排序方式:");
-		lbSort.setFont(new Font("新細明體",Font.PLAIN ,20));
-		lbSort.setBounds(300,60,100,30);
-		Panel.add(lbSort);
-		
-		sort=new JComboBox(c);
-		sort.setFont(new Font("新細明體",Font.PLAIN ,20));
-		sort.setBounds(400,60,150,30);
-		Panel.add(sort);
 		
 		Panel1=new JPanel();
 		Panel1.setSize(550 ,1125);
@@ -166,11 +127,11 @@ public class MoviePanel extends JPanel implements ActionListener{
 			GBC.weightx = 1;
 			GBC.weighty = 0;
 			GBC.fill = GridBagConstraints.HORIZONTAL;
-			Panel1.add(new MovieSearchPanel("無敵鐵金剛"),GBC);
-			Panel1.add(new MovieSearchPanel("多拉A夢"),GBC);
+			Panel1.add(new MovieSearchPanel("會員A"),GBC);
+			Panel1.add(new MovieSearchPanel("會員B"),GBC);
 			
-			for(int i=0;i<1;i++){
-				Panel1.add(new MovieSearchPanel("鋼鐵人"),GBC);
+			for(int i=0;i<10;i++){
+				Panel1.add(new MovieSearchPanel("會員"+i),GBC);
 			}
 			for(int i=0;i<7;i++){
 				Panel1.add(new EmptyPanel(),GBC);
@@ -188,18 +149,4 @@ public class MoviePanel extends JPanel implements ActionListener{
 		
 	}
 	
-}
-class EmptyPanel extends JPanel{
-	JLabel jl;
-	public EmptyPanel(){
-		initialize();
-		
-	}
-	void initialize() {
-		
-		jl = new JLabel("   ");
-		jl.setFont(new Font("新細明體",Font.PLAIN ,36));
-		this.setBackground(Color.white);
-		this.add(jl);
-	}
 }

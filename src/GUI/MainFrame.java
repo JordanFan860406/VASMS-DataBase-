@@ -18,7 +18,7 @@ public class MainFrame implements ActionListener{
 	private JPanel btnPanel;
 	JButton btnMov = new JButton("電影");
 	JButton btnMem = new JButton("會員");
-	JButton btn = new JButton("優惠");
+	JButton btn = new JButton("下載");
 	JLabel lb = new JLabel("               歡迎使用本系統");
 	
 	public static void  main(String [] args){
@@ -89,15 +89,14 @@ public class MainFrame implements ActionListener{
 			
 			break;
 		case"會員":
-			JPanel  JPanel2=new JPanel();
-			JPanel2.setBackground(Color.CYAN);
+			JPanel  MemberPanel=new MemberPanel();
 			mainPanel.removeAll();
-			mainPanel.add(JPanel2);
+			mainPanel.add(MemberPanel);
 			mainPanel.updateUI();
 			
 			break;
 			
-		case"優惠":
+		case"下載":
 			JPanel  JPanel3=new JPanel();
 			JPanel3.setBackground(Color.lightGray);
 			mainPanel.removeAll();
