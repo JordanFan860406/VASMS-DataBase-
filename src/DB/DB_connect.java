@@ -1,10 +1,6 @@
 package DB;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class DB_connect {
@@ -18,6 +14,8 @@ public class DB_connect {
 	    p.put("password","rua01");
 		Connection testCon = DriverManager.getConnection(CONNECTION, p);
 		Statement stmt = testCon.createStatement();
+		//stmt.executeUpdate("INSERT INTO  manufacture ('mv00004', '漫威工作室')");
+//stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
 		ResultSet rs = stmt.executeQuery("SELECT company_name, address From movie natural join manufacture natural join company where title = '海角七號'");
 		ResultSetMetaData rm = rs.getMetaData();
 
@@ -31,8 +29,8 @@ public class DB_connect {
 		}
 		System.out.println("");
 		}
-		//stmt.executeUpdate("INSERT INTO manufacture VALUES ('mv00004', '漫威工作室')");
-		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
 		
+		stmt.close();
+		testCon.close();
 	}
 }
