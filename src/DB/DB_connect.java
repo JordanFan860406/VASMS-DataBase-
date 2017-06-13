@@ -143,7 +143,8 @@ public class DB_connect {
 	
 
 	public void searchDownload() throws Exception{
-		stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
+		System.out.println("123");
+		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
 //		ResultSet rs = stmt.executeQuery("SELECT title, year(download_date) as year,  month(download_date) as month ,count(buy.movie_id) as sum From buy natural join movie natural join genres where movie_genres='科幻' group by title, year, month order by sum desc");
 //		ResultSetMetaData rm = rs.getMetaData();
 //
