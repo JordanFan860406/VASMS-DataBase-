@@ -36,7 +36,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		
 		GBC.insets = new Insets(2,2,10,10);
 		GBC.gridheight=1;
-		GBC.gridwidth=1;
+		GBC.gridwidth=0;
 		GBC.fill = GridBagConstraints.EAST;
 		radioButton= new JRadioButton();
 		radioButton.setBackground(Color.white);
@@ -46,25 +46,25 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	
 		jlName = new JLabel();
 		jlName.setFont(new Font("新細明體",Font.PLAIN ,24));
-		GBC.gridheight=1;
+		GBC.gridheight=0;
 		GBC.gridwidth=1;
+		GBC.fill = GridBagConstraints.CENTER;
 		this.add(jlName,GBC);
 		
 		GBC.fill = GridBagConstraints.WEST;
 		jb=new JButton("詳細資料");
 		GBC.gridheight=1;
 		GBC.gridwidth=1;
-		jb.setFont(new Font("新細明體",Font.PLAIN ,36));
+		jb.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(jb,GBC);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-			if(radioButton.isSelected()){
+			if(radioButton.isSelected()){  
 				this.setBackground(Color.lightGray);
 				radioButton.setBackground(Color.lightGray);
-				System.out.print("11");
 			}
 			else{
 				this.setBackground(Color.white);

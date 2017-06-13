@@ -2,13 +2,26 @@ package Object;
 
 public class Actor {
 	String name;
-	String ID;
 	time birthday;
+	String sex;
+	
+	public Actor(){
+		
+	}
 	
 	
-	public Actor(String name,String ID,time birthday){
+	public void setName(String name){
 		this.name=name;
-		this.ID=ID;
+	}
+	public void setBirthday(time birthday){
 		this.birthday=birthday;
+	}
+	public void setSex(String sex){
+		this.sex=sex;
+	}
+	
+	
+	public String getName(){
+		return name;
 	}
 }
