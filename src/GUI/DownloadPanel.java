@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,16 +24,20 @@ public class DownloadPanel extends JPanel {
 	private JComboBox movieType;
 	private JLabel lbYear;
 	DB_connect DB;
+	String year;
+	String mvType;
+	JList reList;
 	JPanel searchPanel;
 	JPanel Panel;
 	JPanel Panel1;
 	String select;
 	String [] a={"查詢項目", "依年代查詢", "依電影類型查詢"};
 	String [] b={"2005", "2006", "2007", "2008", "2009", "2010", "2011",
-			"2012", "2013", "2014", "2015", "2005~2015"};
+			"2012", "2013", "2014", "2015", "2005~2015", "2016", "2017"};
 	String [] c={"所有類型","驚悚","動作","愛情"};
-	public DownloadPanel(){
+	public DownloadPanel(DB_connect DB){
 		initialize();
+		this.DB = DB;
 	}
 	
 	void initialize(){
@@ -70,7 +75,7 @@ public class DownloadPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				select = Year.getSelectedItem().toString();
+				year = Year.getSelectedItem().toString();
 			}
 			
 		});
@@ -80,6 +85,15 @@ public class DownloadPanel extends JPanel {
     	movieType.setBounds(125,80,150,30);
     	movieType.setVisible(false);
 		searchPanel.add(movieType);
+		movieType.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mvType = movieType.getSelectedItem().toString();
+			}
+			
+		});
 		
 		type.addActionListener(new ActionListener(){
 
@@ -93,12 +107,15 @@ public class DownloadPanel extends JPanel {
                 	//searchPanel.remove(movieType);
                 	movieType.setVisible(false);
                 	Year.setVisible(true);
+                	mvType = null;
                 }
                 
                 else if(selected.toString().equals("依電影類型查詢")){
                 	Year.setVisible(false);
                 	movieType.setVisible(true);
                 	
+                	mvType = movieType.getSelectedItem().toString();
+                	year = null;
                 }
 			}	
 		});
@@ -113,7 +130,8 @@ public class DownloadPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					DB.searchDownload();
+					ArrayList<String>tmpList = DB.searchDownload(year, mvType);
+					reList.setListData(tmpList.toArray(a));
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -138,10 +156,10 @@ public class DownloadPanel extends JPanel {
 		
 		Panel1=new JPanel();
 		Panel1.setSize(550 ,1125);
-		JList resultList = new JList();
-		resultList.setBounds(25,100,550 ,425);
+		reList = new JList();
+		reList.setBounds(25,100,550 ,425);
 		Panel1.setBackground(Color.white);
-		Panel.add(resultList);
+		Panel.add(reList);
 		
 		
 	}
