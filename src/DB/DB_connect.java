@@ -68,35 +68,53 @@ public class DB_connect {
 		
 	}
 	
-	public static void main(String[] args) throws Exception{
-		// TODO Auto-generated method stub
-		String CONNECTION = "jdbc:mariadb://140.127.74.210:3306/410477025";
-		Class.forName("org.mariadb.jdbc.Driver");
-		Properties p = new Properties();
-	    p.put("user","410477025");
-	    p.put("password","rua01");
-		Connection testCon = DriverManager.getConnection(CONNECTION, p);
-		Statement stmt = testCon.createStatement();
-		//stmt.executeUpdate("INSERT INTO  manufacture ('mv00004', '漫威工作室')");
-//stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
-		ResultSet rs = stmt.executeQuery("SELECT * From movie natural join manufacture natural join company");
-		ResultSetMetaData rm = rs.getMetaData();
-
-		int cnum = rm.getColumnCount();
-
-		while(rs.next()){
-			for(int i=1; i<=cnum; i++){
-				if(rm.getColumnName(i).equals("release_date")){
-					String[] str = rs.getObject(i).toString().split("-");
-					System.out.print(str[0]+" "+str[1]+" "+str[2]);
-				}
-				System.out.print(rm.getColumnName(i)+":"+rs.getObject(i)+" ");
-				
-			}
-			System.out.println("");
-		}
-		
-		stmt.close();
-		testCon.close();
+	public void searchDownload() throws Exception{
+		stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
+//		ResultSet rs = stmt.executeQuery("SELECT title, year(download_date) as year,  month(download_date) as month ,count(buy.movie_id) as sum From buy natural join movie natural join genres where movie_genres='科幻' group by title, year, month order by sum desc");
+//		ResultSetMetaData rm = rs.getMetaData();
+//
+//		int cnum = rm.getColumnCount();
+//
+//		while(rs.next())
+//		{
+//		for(int i=1; i<=cnum; i++)
+//		{
+//		System.out.print(rm.getColumnName(i)+":"+rs.getObject(i)+" ");
+//		}
+//		System.out.println("");
+//		}
+//		
 	}
+	
+//	public static void main(String[] args) throws Exception{
+//		// TODO Auto-generated method stub
+//		String CONNECTION = "jdbc:mariadb://140.127.74.210:3306/410477025";
+//		Class.forName("org.mariadb.jdbc.Driver");
+//		Properties p = new Properties();
+//	    p.put("user","410477025");
+//	    p.put("password","rua01");
+//		Connection testCon = DriverManager.getConnection(CONNECTION, p);
+//		Statement stmt = testCon.createStatement();
+//		//stmt.executeUpdate("INSERT INTO  manufacture ('mv00004', '漫威工作室')");
+////stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
+//		ResultSet rs = stmt.executeQuery("SELECT * From movie natural join manufacture natural join company");
+//		ResultSetMetaData rm = rs.getMetaData();
+//
+//		int cnum = rm.getColumnCount();
+//
+//		while(rs.next()){
+//			for(int i=1; i<=cnum; i++){
+//				if(rm.getColumnName(i).equals("release_date")){
+//					String[] str = rs.getObject(i).toString().split("-");
+//					System.out.print(str[0]+" "+str[1]+" "+str[2]);
+//				}
+//				System.out.print(rm.getColumnName(i)+":"+rs.getObject(i)+" ");
+//				
+//			}
+//			System.out.println("");
+//		}
+//		
+//		stmt.close();
+//		testCon.close();
+//	}
 }

@@ -9,21 +9,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class DownloadPanel extends JPanel implements ActionListener{
+import DB.DB_connect;
+
+public class DownloadPanel extends JPanel {
 	private JComboBox type;
 	private JComboBox Year;
 	private JComboBox movieType;
 	private JLabel lbYear;
-	JButton btnNew= new JButton("新增");
-	JButton btnDelete= new JButton("刪除");
+	DB_connect DB;
 	JPanel searchPanel;
 	JPanel Panel;
 	JPanel Panel1;
+	String select;
 	String [] a={"查詢項目", "依年代查詢", "依電影類型查詢"};
 	String [] b={"2005", "2006", "2007", "2008", "2009", "2010", "2011",
 			"2012", "2013", "2014", "2015", "2005~2015"};
@@ -41,18 +44,6 @@ public class DownloadPanel extends JPanel implements ActionListener{
 		searchPanel.setBackground(Color.lightGray);
 		searchPanel.setLayout(null);
 		this.add(searchPanel);
-		
-		btnNew.addActionListener(this);
-		btnNew.setBounds(720,120,200, 150);
-		btnNew.setFont(new Font("標楷體",Font.PLAIN ,48));
-		//btnClose.setBounds(x, y, width, height);
-		this.add(btnNew);
-		
-		btnDelete.addActionListener(this);
-		btnDelete.setBounds(720,400,200, 150);
-		btnDelete.setFont(new Font("標楷體",Font.PLAIN ,48));
-		//btnClose.setBounds(x, y, width, height);
-		this.add(btnDelete);
 		
 		JLabel panName=new JLabel("__________________________搜尋條件___________________________");
 		panName.setFont(new Font("新細明體",Font.PLAIN ,20));
@@ -74,21 +65,21 @@ public class DownloadPanel extends JPanel implements ActionListener{
 		Year.setBounds(125,80,150,30);
 		Year.setVisible(false);
 		searchPanel.add(Year);
+		Year.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				select = Year.getSelectedItem().toString();
+			}
+			
+		});
 		
     	movieType=new JComboBox(c);
     	movieType.setFont(new Font("新細明體",Font.PLAIN ,20));
     	movieType.setBounds(125,80,150,30);
     	movieType.setVisible(false);
 		searchPanel.add(movieType);
-//		lbYear=new JLabel("年代");
-//    	lbYear.setFont(new Font("新細明體",Font.PLAIN ,20));
-//    	lbYear.setBounds(5,80,120,30);
-//		searchPanel.add(lbYear);
-		
-//		Year=new JComboBox(b);
-//		Year.setFont(new Font("新細明體",Font.PLAIN ,20));
-//		Year.setBounds(125,80,150,30);
-//		searchPanel.add(Year);
 		
 		type.addActionListener(new ActionListener(){
 
@@ -112,16 +103,25 @@ public class DownloadPanel extends JPanel implements ActionListener{
 			}	
 		});
 		
-//		JLabel lbYear=new JLabel("");
-//		lbType.setFont(new Font("新細明體",Font.PLAIN ,20));
-//		lbType.setBounds(5,50,120,30);
-//		searchPanel.add(lbType);
 		
 		JButton btnSearch= new JButton("搜尋");
-		btnSearch.addActionListener(this);
 		btnSearch.setBounds(480,140,100, 50);
 		//btnClose.setBounds(x, y, width, height);
 		searchPanel.add(btnSearch);
+		btnSearch.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					DB.searchDownload();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
 		
 		Panel=new JPanel();
 		Panel.setSize(600,550);
@@ -138,18 +138,14 @@ public class DownloadPanel extends JPanel implements ActionListener{
 		
 		Panel1=new JPanel();
 		Panel1.setSize(550 ,1125);
-		JScrollPane scrollPane=new JScrollPane(Panel1,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(25,100,550 ,425);
+		JList resultList = new JList();
+		resultList.setBounds(25,100,550 ,425);
 		Panel1.setBackground(Color.white);
-		Panel.add(scrollPane);
+		Panel.add(resultList);
 		
 		
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }
