@@ -160,7 +160,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 	}
 
 
-	public void search(String name,String type,String year,String actor) throws Exception{
+	public void search(String name,String type,String year,String actor,DB_connect DB) throws Exception{
 		Panel1.removeAll();
 		Panel1.setLayout(new GridBagLayout() );
 		Panel1.setBackground(Color.lightGray);
@@ -175,7 +175,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		ArrayList<Movie> movieArray=DB.searchMovie(name,type,year,actor);
 		
 		for(Movie i:movieArray){
-			Panel1.add(new MovieSearchPanel(i),GBC);
+			Panel1.add(new MovieSearchPanel(i,DB),GBC);
 		}
 		for(int i=0;i<7;i++){
 			Panel1.add(new EmptyPanel(),GBC);
@@ -194,7 +194,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 				String genres=type.getSelectedItem().toString();
 				String years=year.getSelectedItem().toString();
 				String actors=actor.getSelectedItem().toString();
-				search(name,genres,years,actors);
+				search(name,genres,years,actors,DB);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

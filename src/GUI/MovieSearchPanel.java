@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import DB.DB_connect;
 import Object.Movie;
 
 public class MovieSearchPanel extends JPanel implements ActionListener{
@@ -21,12 +22,13 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	JRadioButton radioButton;
 	JButton jb;
 	boolean select=false;
-	
-	public MovieSearchPanel(Movie movie){
+	DB_connect DB;
+	Movie movie;
+	public MovieSearchPanel(Movie movie,DB_connect DB){
 		initialize();
 		this.jlName.setText("名稱:"+movie.getTitle());
-		/*btnClos1.setBounds(0, 50,50,50);
-		this.add(btnClos1);*/
+		this.DB=DB;
+		this.movie=movie;
 	}
 	
 	void initialize() {
@@ -60,7 +62,7 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		jb.addActionListener(new ActionListener(){ 
 			public void actionPerformed(ActionEvent e) 
 			{ 
-				new MovieModify();
+				new MovieModify(DB,movie);
 			} 
 		}); 
 	}
