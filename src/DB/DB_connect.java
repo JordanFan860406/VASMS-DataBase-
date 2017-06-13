@@ -141,17 +141,32 @@ public class DB_connect {
 	}
 	
 
-	public ArrayList<String> searchDownload(String year, String type) throws Exception{
+	public ArrayList<String> searchDownload(String year, String month, String type) throws Exception{
 		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
+		String [] arr = {"","電影名稱", "下載次數"};
 		ArrayList<String> resultList = new ArrayList<String>();
-		String temp = null;
-		if(year == null){
-			temp = "SELECT title, year(download_date) as year,  month(download_date) as month ,count(buy.movie_id) as downloadtime From buy natural join movie natural join genres where movie_genres='"+type+"' group by title, year, month order by downloadtime desc";
+		ArrayList<String> where = new ArrayList<String>();
+		String find = "Select title, count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
+		if(!year.equals("選擇年份") ){
+			where.add("year(download_date)='" +  year + "' ");
 		}
-		else if(type == null){
-			temp = "SELECT title,  month(download_date) as month ,count(buy.movie_id) as downloadtime From buy natural join movie natural join genres where year(download_date)='"+year+"' group by title, month order by downloadtime desc";
+		if(!month.equals("選擇月份")){
+			where.add("month(download_date)='" + month + "' ");
 		}
-		ResultSet rs = stmt.executeQuery(temp);
+		if(!type.equals("選擇類型")){
+			where.add("movie_genres='" + type + "' ");
+		}
+		if(where.size()>0){
+			find += "where ";
+		}
+		for(int i=0;i<where.size();i++){
+			find+=where.get(i);
+			if(where.size()!=i+1){
+				find+="and ";
+			}
+		}
+		find +="group by title order by downloadtime desc";
+		ResultSet rs = stmt.executeQuery(find);
 		ResultSetMetaData rm = rs.getMetaData();
 
 		int cnum = rm.getColumnCount();
@@ -160,9 +175,9 @@ public class DB_connect {
 		{
 			String resultS = "";
 		for(int i=1; i<=cnum; i++)
-		{
-			resultS += rm.getColumnName(i)+": "+rs.getObject(i)+"   ";
-			System.out.print(rm.getColumnName(i)+":"+rs.getObject(i)+" ");
+		{	
+			resultS += arr[i]+" : "+rs.getObject(i) + "  ";
+			System.out.print(resultS);
 		}
 		resultList.add(resultS);
 		System.out.println("");
