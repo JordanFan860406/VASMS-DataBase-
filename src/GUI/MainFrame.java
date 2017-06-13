@@ -23,7 +23,7 @@ public class MainFrame implements ActionListener{
 	JButton btn = new JButton("下載");
 	JLabel lb = new JLabel("               歡迎使用本系統");
 	DB_connect DB;
-	
+	String DBB;
 	public static void  main(String [] args) throws Exception{
 		new MainFrame();
 	}
