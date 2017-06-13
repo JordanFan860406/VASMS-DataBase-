@@ -86,10 +86,16 @@ public class MainFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 		case"電影":
-			JPanel  JPanel1=new MoviePanel(DB);
-			mainPanel.removeAll();
-			mainPanel.add(JPanel1);
-			mainPanel.updateUI();
+			JPanel JPanel1;
+			try {
+				JPanel1 = new MoviePanel(DB);
+				mainPanel.removeAll();
+				mainPanel.add(JPanel1);
+				mainPanel.updateUI();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			break;
 		case"會員":

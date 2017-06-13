@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import DB.DB_connect;
+import Object.Actor;
 import Object.Movie;
 
 public class MoviePanel extends JPanel implements ActionListener{
@@ -37,15 +38,26 @@ public class MoviePanel extends JPanel implements ActionListener{
 	JPanel Panel;
 	JPanel Panel1;
 	DB_connect DB;
-	String [] a={"所有類型","驚悚","動作","愛情"};
-	String [] b={"所有年代","2017","2015","2000~2015"};
-	String [] c={"無","下載次數","年代(小~大)","年代(大~小)"};
-	public MoviePanel(DB_connect DB){
+	String [] a={"所有類型"};
+	String [] b={"所有年代","2017","2005~2015","2016"};
+	String [] c={"所有演員"};
+	public MoviePanel(DB_connect DB) throws Exception{
 		initialize();
 		this.DB=DB;
+		updateData(DB);
 	}
 	
-	
+	void updateData(DB_connect DB) throws Exception{
+		ArrayList<String> genresArray=DB.searchGenres();
+		for(String i:genresArray){
+			type.addItem(i);
+			//System.out.print(i);
+		}
+		ArrayList<Actor> actorArray=DB.searchActor();
+		for(Actor i:actorArray){
+			actor.addItem(i.getName());
+		}
+	}
 	
 	void initialize() {
 		this.setSize(1000, 800);
@@ -116,7 +128,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		lbActor.setBounds(275,120,100,30);
 		searchPanel.add(lbActor);
 		
-		actor=new JComboBox();
+		actor=new JComboBox(c);
 		actor.setFont(new Font("新細明體",Font.PLAIN ,20));
 		actor.setBounds(330,120,150,30);
 		searchPanel.add(actor);
@@ -135,15 +147,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		lbAns.setBounds(10,5,600,30);
 		Panel.add(lbAns);
 		
-		JLabel lbSort=new JLabel("排序方式:");
-		lbSort.setFont(new Font("新細明體",Font.PLAIN ,20));
-		lbSort.setBounds(300,60,100,30);
-		Panel.add(lbSort);
-		
-		sort=new JComboBox(c);
-		sort.setFont(new Font("新細明體",Font.PLAIN ,20));
-		sort.setBounds(400,60,150,30);
-		Panel.add(sort);
+
 		
 		Panel1=new JPanel();
 		Panel1.setSize(550 ,1125);
@@ -156,7 +160,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 	}
 
 
-	public void search() throws Exception{
+	public void search(String name,String type,String year,String actor) throws Exception{
 		Panel1.removeAll();
 		Panel1.setLayout(new GridBagLayout() );
 		Panel1.setBackground(Color.lightGray);
@@ -168,7 +172,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		GBC.weighty = 0;
 		GBC.fill = GridBagConstraints.HORIZONTAL;
 		
-		ArrayList<Movie> movieArray=DB.searchMovie();
+		ArrayList<Movie> movieArray=DB.searchMovie(name,type,year,actor);
 		
 		for(Movie i:movieArray){
 			Panel1.add(new MovieSearchPanel(i),GBC);
@@ -185,7 +189,12 @@ public class MoviePanel extends JPanel implements ActionListener{
 		switch(e.getActionCommand()){
 		case"搜尋":
 			try {
-				search();
+
+				String name=tfName.getText();
+				String genres=type.getSelectedItem().toString();
+				String years=year.getSelectedItem().toString();
+				String actors=actor.getSelectedItem().toString();
+				search(name,genres,years,actors);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
