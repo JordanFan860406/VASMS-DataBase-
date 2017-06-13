@@ -34,4 +34,16 @@ public class Movie {
 	public String getTitle(){
 		return title;
 	}
+	public String getCompanyName(){
+		return company.name;
+	}
+	public String getCompanyAddress(){
+		return company.adress;
+	}
+	public time getTime(){
+		return publishTime;
+	}
+	public int get(){
+		return charge;
+	}
 }
