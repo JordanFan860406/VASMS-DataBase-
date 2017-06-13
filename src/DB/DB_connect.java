@@ -28,8 +28,7 @@ public class DB_connect {
 	
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
-		String find="SELECT * From movie natural join manufacture natural join company natural join act where ";
-		
+		String find="SELECT * From movie natural join manufacture natural join company natural join act natural join genres ";
 		ArrayList<String> where=new ArrayList<String>();
 		if(!name.equals("")){
 			where.add("title='"+name+"' ");
@@ -47,6 +46,9 @@ public class DB_connect {
 		}
 		if(!actor.equals("所有演員")){
 			where.add("actor_name='"+actor+"'");
+		}
+		if(where.size()>0){
+			find+="where ";
 		}
 		for(int i=0;i<where.size();i++){
 			find+=where.get(i);
