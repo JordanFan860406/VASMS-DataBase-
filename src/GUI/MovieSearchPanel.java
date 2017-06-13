@@ -57,14 +57,20 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		GBC.gridwidth=1;
 		jb.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(jb,GBC);
+		jb.addActionListener(new ActionListener(){ 
+			public void actionPerformed(ActionEvent e) 
+			{ 
+				new MovieModify();
+			} 
+		}); 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
 			if(radioButton.isSelected()){  
 				this.setBackground(Color.lightGray);
 				radioButton.setBackground(Color.lightGray);
+			
 			}
 			else{
 				this.setBackground(Color.white);

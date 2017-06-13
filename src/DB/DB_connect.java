@@ -57,7 +57,6 @@ public class DB_connect {
 			}
 				
 		}
-		System.out.println(find);
 		ResultSet rs = stmt.executeQuery(find);
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
