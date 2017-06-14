@@ -28,7 +28,7 @@ public class DownloadPanel extends JPanel {
 	private JComboBox month;
 	private JComboBox movieType;
 	private JLabel lbYear;
-	JTextArea dwName;
+	JList dwName;
 	DB_connect DB;
 	String year;
 	String mvType;
@@ -111,7 +111,7 @@ public class DownloadPanel extends JPanel {
 					getMonth = month.getSelectedItem().toString();
 					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, getMonth, mvType);
 					reList.setListData(tmpList.toArray());
-					dwName.setText("");
+//					dwName.setText("");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -130,7 +130,12 @@ public class DownloadPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				new DownloadInsert(DB);
+				try {
+					new DownloadInsert(DB);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		});
@@ -139,7 +144,16 @@ public class DownloadPanel extends JPanel {
 		JButton btnDelete = new JButton("刪除");
 		btnDelete.setFont(new Font("新細明體",Font.PLAIN ,28));
 		btnDelete.setBounds(820, 5, 150, 100);
-		this.add(btnDelete);		
+		this.add(btnDelete);
+		btnDelete.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		Panel=new JPanel();
 		Panel.setSize(600,550);
@@ -175,10 +189,9 @@ public class DownloadPanel extends JPanel {
 						String []reArr = tempArr[1].split(" ");
 						mvName = reArr[1];
 						ArrayList<String> rsList = DB.getDownloadDB().downloadName(mvName);
-						dwName.setText("");
-						for(int i=0 ; i<rsList.size() ; i++){
-							dwName.append(rsList.get(i) + "\n");
-						}
+//						for(int i=0 ; i<rsList.size() ; i++){
+						dwName.setListData(rsList.toArray());
+//						}
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -195,11 +208,9 @@ public class DownloadPanel extends JPanel {
 		dwData.setBounds(650, 180, 250, 50);
 		this.add(dwData);
 		
-		dwName = new JTextArea();
+		dwName = new JList();
 		dwName.setFont(new Font("新細明體",Font.PLAIN ,18));
 		dwName.setBounds(630, 240, 350, 550);
-		dwName.setEnabled(false);
-		dwName.setDisabledTextColor(Color.BLACK);
 		this.add(dwName);
 	}
 	

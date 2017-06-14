@@ -76,25 +76,35 @@ public class DB_Download {
 		return resultArr;
 	}
 	
-	public ArrayList<String> searchID(String name, String mvTitle){
+	public ArrayList<String> searchID(String name, String mvTitle) throws Exception{
 		ArrayList<String>conList = new ArrayList<String>();
-		String find = "Select member_id From member where member_name='"+ name +"'";
-		//String findMv =
-		ResultSet rs = stmt.executeQuery(find);
-		ResultSetMetaData rm = rs.getMetaData();
-		int cnum = rm.getColumnCount();
-
-		while(rs.next())
-		{
-			String resultS = "";
-		for(int i=1; i<=cnum; i++)
-		{	
-			resultS += items[i]+" : "+rs.getObject(i) + "  ";
-			
-		}
-		resultArr.add(resultS);
-		System.out.println("");
+		String findId = "Select member_id From member where member_name='"+ name +"'";
+		String findMv = "Select movie_id From movie where title='"+ mvTitle +"'";
+		String[]temp = {findId, findMv};
+		for(int i=0 ; i<temp.length ; i++){
+			ResultSet rs = stmt.executeQuery(temp[i]);
+			ResultSetMetaData rm = rs.getMetaData();
+			int cnum = rm.getColumnCount();
+	
+			while(rs.next())
+			{
+				String resultS = "";
+			for(int j=1; j<=cnum; j++)
+			{	
+				conList.add(rs.getObject(j).toString());
+			}
+			}
 		}
 		return conList;
+	}
+	
+	public void insertDownload(String memId, String mvId, String date) throws Exception{
+		String sql = "INSERT INTO buy (member_id, movie_id, download_date) VALUES ('"+memId+"', '"+mvId+"', '"+ date +"')";
+		stmt.executeUpdate(sql);
+	}
+	
+	public void deleteDownLoad(){
+		String sql = "";
+		
 	}
 }
