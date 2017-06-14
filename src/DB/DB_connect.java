@@ -17,6 +17,7 @@ public class DB_connect {
 	DB_Download DownloadDB;
 	DB_Company ComanyDB;
 	DB_Director DictorDB;
+	DB_Member MemberDB;
 	public DB_connect() throws Exception{
 		connect();
 		this.MovieDB=new DB_Movie(this);
@@ -25,6 +26,7 @@ public class DB_connect {
 		this.ComanyDB=new DB_Company(this);
 		this.DownloadDB = new DB_Download(this);
 		this.DictorDB = new DB_Director(this);
+		MemberDB=new DB_Member(this);
 	}
 	
 	void connect()throws Exception{
@@ -61,7 +63,10 @@ public class DB_connect {
 		
 		return DictorDB;
 	}
-	
+	public DB_Member getMemberDB(){
+		
+		return MemberDB;
+	}
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
 		String CONNECTION = "jdbc:mariadb://140.127.74.210:3306/410477025";
@@ -75,10 +80,10 @@ public class DB_connect {
         //stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
 		String a="where ";
 		String b="Lady Gaga";
-		ResultSet rs = stmt.executeQuery("SELECT count(*) From movie");
+		ResultSet rs = stmt.executeQuery("SELECT member_name,sum(per_charge) From movie natural join buy natural join member group by member_id");
 		ResultSetMetaData rm = rs.getMetaData();
-		String sql = "INSERT INTO manufacture (movie_id, company_name) VALUES ('mv00020', 'Jang')";
-		stmt.execute(sql);
+		//String sql = "INSERT INTO manufacture (movie_id, company_name) VALUES ('mv00020', 'Jang')";
+		//stmt.execute(sql);
 		//stmt.executeUpdate("UPDATE movie SET release_date='2000'  WHERE movie_id='mv00019';");
 		int cnum = rm.getColumnCount();
 		//stmt.executeUpdate("UPDATE movie SET release_date='"+time+"' WHERE movie_id='"+movie.getID()+"'");
