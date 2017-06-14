@@ -121,6 +121,26 @@ public class DownloadPanel extends JPanel {
 		});
 		
 		
+		JButton btnInsert = new JButton("新增");
+		btnInsert.setFont(new Font("新細明體",Font.PLAIN ,28));
+		btnInsert.setBounds(650, 5, 150, 100);
+		this.add(btnInsert);
+		btnInsert.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				new DownloadInsert(DB);
+			}
+			
+		});
+		
+		
+		JButton btnDelete = new JButton("刪除");
+		btnDelete.setFont(new Font("新細明體",Font.PLAIN ,28));
+		btnDelete.setBounds(820, 5, 150, 100);
+		this.add(btnDelete);		
+		
 		Panel=new JPanel();
 		Panel.setSize(600,550);
 		Panel.setBackground(Color.lightGray);

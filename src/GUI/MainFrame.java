@@ -21,6 +21,7 @@ public class MainFrame implements ActionListener{
 	JButton btnMov = new JButton("電影");
 	JButton btnMem = new JButton("會員");
 	JButton btn = new JButton("下載");
+	JButton btnOther = new JButton("其他");
 	JLabel lb = new JLabel("               歡迎使用本系統");
 	DB_connect DB;
 	public static void  main(String [] args) throws Exception{
@@ -74,7 +75,9 @@ public class MainFrame implements ActionListener{
 		btnPanel.add(btn);
 		
 		
-		btnPanel.add(new JButton("離開"));
+		btnOther.setFont(new Font("標楷體",Font.PLAIN ,48));
+		btnOther.addActionListener(this);
+		btnPanel.add(btnOther);
 		
 	}
 
@@ -112,6 +115,13 @@ public class MainFrame implements ActionListener{
 			mainPanel.add(JPanel3);
 			mainPanel.updateUI();
 			
+			break;
+			
+		case"其他":
+			JPanel otPanel = new OtherPanel(DB);
+			mainPanel.removeAll();
+			mainPanel.add(otPanel);
+			mainPanel.updateUI();
 			break;
 			
 		}

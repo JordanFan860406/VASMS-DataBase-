@@ -75,4 +75,26 @@ public class DB_Download {
 		}
 		return resultArr;
 	}
+	
+	public ArrayList<String> searchID(String name, String mvTitle){
+		ArrayList<String>conList = new ArrayList<String>();
+		String find = "Select member_id From member where member_name='"+ name +"'";
+		//String findMv =
+		ResultSet rs = stmt.executeQuery(find);
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+
+		while(rs.next())
+		{
+			String resultS = "";
+		for(int i=1; i<=cnum; i++)
+		{	
+			resultS += items[i]+" : "+rs.getObject(i) + "  ";
+			
+		}
+		resultArr.add(resultS);
+		System.out.println("");
+		}
+		return conList;
+	}
 }
