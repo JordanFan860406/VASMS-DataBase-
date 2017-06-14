@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
@@ -21,7 +21,7 @@ import Object.Direct;
 import Object.Movie;
 import Object.time;
 
-public class MovieModify extends JFrame implements ActionListener{
+public class MovieInsert extends JFrame implements ActionListener{
 	JLabel lb = new JLabel("電影名稱:");
 	JLabel lb1 = new JLabel("出版公司:");
 	JLabel lb2 = new JLabel("公司地址:");
@@ -35,18 +35,17 @@ public class MovieModify extends JFrame implements ActionListener{
 	private JTextField tfday;
 	private JTextField tfmon;
 	private JTextField tfgen;
-	JComboBox director;
-	JComboBox com;
 	JButton jbEnter;
 	JButton jbEdit;
+	JButton jb;
 	JButton jbClose;
 	DB_connect DB;
-	Movie movie;
-	public MovieModify(DB_connect DB,Movie movie) throws SQLException{
+	JComboBox com;
+	JComboBox director;
+	
+	public MovieInsert(DB_connect DB) throws SQLException{
 		this.DB=DB;
-		this.movie=movie;
 		initialize();
-		setEditMode(false);
 		setData();
 		
 	}
@@ -63,6 +62,7 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfName.setBounds(130, 10, 250,50);
 		tfName.setFont(new Font("新細明體",Font.PLAIN ,20));
 		this.add(tfName);
+		
 		
 		//公司名稱
 		lb1.setFont(new Font("新細明體",Font.PLAIN ,24));
@@ -140,16 +140,7 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfmon.setBounds(130, 410, 100,50);
 		tfmon.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(tfmon);
-		//導演
-		JLabel lb10 = new JLabel("導演:");
-		lb10.setFont(new Font("新細明體",Font.PLAIN ,24));
-		lb10.setBounds(240,410,150,50);
-		this.add(lb10);
 		
-		director=new JComboBox();
-		director.setBounds(300, 410, 150,50);
-		director.setFont(new Font("新細明體",Font.PLAIN ,20));
-		this.add(director);
 		//類型
 		JLabel lb9 = new JLabel("類型");
 		lb9.setFont(new Font("新細明體",Font.PLAIN ,24));
@@ -161,29 +152,25 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfgen.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(tfgen);
 		
-		jbEdit=new JButton();
+		JLabel lb10 = new JLabel("導演:");
+		lb10.setFont(new Font("新細明體",Font.PLAIN ,24));
+		lb10.setBounds(240,410,150,50);
+		this.add(lb10);
+		
+		director=new JComboBox();
+		director.setBounds(300, 410, 150,50);
+		director.setFont(new Font("新細明體",Font.PLAIN ,20));
+		this.add(director);
+		
+		jbEdit=new JButton("確定");
 		jbEdit.setBounds(10, 600,200, 70);
 		this.add(jbEdit);
 		jbEdit.addActionListener(this);
 		
-	}
-	private void setEditMode(Boolean mode){
-		tfName.setEditable(mode);
-		com.setEditable(false);
-		tfadd.setEditable(false);
-		tfyear.setEditable(mode);
-		tfmonth.setEditable(mode);
-		tfday.setEditable(mode);
-		tfmon.setEditable(mode);
-		tfgen.setEditable(mode);
-		if(mode){
-			jbEdit.setText("儲存後關閉");
-			jbEdit.setFont(new Font("新細明體",Font.PLAIN ,24));
-		}
-		else{
-			jbEdit.setText("編輯");
-			jbEdit.setFont(new Font("新細明體",Font.PLAIN ,24));
-		}
+		jb=new JButton("取消");
+		jb.setBounds(250, 600,200, 70);
+		this.add(jb);
+		jb.addActionListener(this);
 	}
 	public void changeAdress(String name) throws SQLException{
 		for(Company i:DB.getCompanyDB().searchAllCom()){
@@ -196,73 +183,79 @@ public class MovieModify extends JFrame implements ActionListener{
 		
 	}
 	public void setData() throws SQLException{
-		tfName.setText(movie.getTitle());
-		com.addItem(movie.getCompanyName());
 		for(Company i:DB.getCompanyDB().searchAllCom()){
-			if(i.getName().equals(movie.getCompanyName())){
-				
-			}else{
-				com.addItem(i.getName());
-			}
+			com.addItem(i.getName());
 		}
-		director.addItem(movie.getdirectName());
 		for(Direct i:DB.getDictorDB().searchAllDirector()){
-			if(i.getName().equals(movie.getdirectName())){
-				
-			}else{
 				director.addItem(i.getName());
-			}
 		}
-		tfadd.setText(movie.getCompanyAddress());
-		tfyear.setText(String.valueOf(movie.getTime().getYear()));
-		tfmonth.setText(String.valueOf(movie.getTime().getMonth()));
-		tfday.setText(String.valueOf(movie.getTime().getDay()));
-		tfmon.setText(String.valueOf(movie.get()));
-		tfgen.setText(movie.getgeners());
 	}
-	public void modifyData() throws SQLException{
-		movie.setTitle(tfName.getText());
-		movie.setCompany(new Company(com.getSelectedItem().toString(),tfadd.getText()));
-		movie.setTime(new time(Integer.parseInt(tfyear.getText()),Integer.parseInt(tfmonth.getText()),Integer.parseInt(tfday.getText())));
-		movie.setcharge(Integer.parseInt(tfmon.getText()));
-		movie.setGeners(tfgen.getText());
-		for(Direct i:DB.getDictorDB().searchAllDirector()){
-			if(i.getName().equals(director.getSelectedItem().toString())){
-				movie.setDirect(i);
+	public void getData(ArrayList<Movie> movieArray) throws SQLException{
+		boolean a=false;
+		for(Movie i:movieArray){
+			if(i.getTitle().equals(tfName.getText())){
+				a=true;
 				break;
 			}
 		}
-		DB.getMovieDB().updateMovie(movie);
+		if(tfName.getText().equals("")){
+			a=true;
+		}
+		if(a){
+			 JOptionPane.showMessageDialog(null,"請輸入正確名稱");
+			
+		}
+		else{
+			Movie movie=new Movie();
+			String ID="mv000"+String.valueOf(movieArray.size()+2);
+			
+			movie.setID(ID);
+			movie.setTitle(tfName.getText());
+			movie.setCompany(new Company(com.getSelectedItem().toString(),tfadd.getText()));
+			//加入導演
+			for(Direct i:DB.getDictorDB().searchAllDirector()){
+				if(i.getName().equals(director.getSelectedItem().toString())){
+					movie.setDirect(i);
+					break;
+				}
+			}
+			try{
+				movie.setTime(new time(Integer.parseInt(tfyear.getText()),Integer.parseInt(tfmonth.getText()),Integer.parseInt(tfday.getText())));
+				movie.setcharge(Integer.parseInt(tfmon.getText()));
+				movie.setGeners(tfgen.getText());
+				
+				System.out.print(tfgen.getText());
+			}catch(NumberFormatException e){
+				JOptionPane.showMessageDialog(null,"請輸入正確資料");
+			}
+			DB.getMovieDB().insertMovie(movie);
+		}
+		
+		
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
-		case"編輯":
-			setEditMode(true);
-			break;
-		
-		case"儲存後關閉":
+		case"確定":
 			try {
-				modifyData();
+				ArrayList<Movie> movieArray=DB.getMovieDB().searchMovie("","所有類型","所有年代","所有演員");
+				
+				
+				getData(movieArray);
+				this.dispose();
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			this.dispose();
 			break;
 		case"取消":
-			
 			this.dispose();
-			break;	
+			break;
 		}
-		
 	}
-	
 }
-
-
-
-
-

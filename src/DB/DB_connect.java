@@ -15,13 +15,16 @@ public class DB_connect {
 	DB_Actor ActorDB;
 	DB_Geners GenresDB;
 	DB_Download DownloadDB;
-	
+	DB_Company ComanyDB;
+	DB_Director DictorDB;
 	public DB_connect() throws Exception{
 		connect();
 		this.MovieDB=new DB_Movie(this);
 		this.ActorDB=new DB_Actor(this);
 		this.GenresDB=new DB_Geners(this);
+		this.ComanyDB=new DB_Company(this);
 		this.DownloadDB = new DB_Download(this);
+		this.DictorDB = new DB_Director(this);
 	}
 	
 	void connect()throws Exception{
@@ -45,12 +48,19 @@ public class DB_connect {
 		
 		return GenresDB;
 	}
+	public DB_Company getCompanyDB(){
+		
+		return ComanyDB;
+	}
 	
 	public DB_Download getDownloadDB(){
 		
 		return DownloadDB;
 	}
-
+	public DB_Director getDictorDB(){
+		
+		return DictorDB;
+	}
 	
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
@@ -65,11 +75,13 @@ public class DB_connect {
         //stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
 		String a="where ";
 		String b="Lady Gaga";
-		ResultSet rs = stmt.executeQuery("SELECT * From movie natural join manufacture natural join company natural join act natural join genres where movie_genres='科幻'");
+		ResultSet rs = stmt.executeQuery("SELECT count(*) From movie");
 		ResultSetMetaData rm = rs.getMetaData();
+		String sql = "INSERT INTO manufacture (movie_id, company_name) VALUES ('mv00020', 'Jang')";
+		stmt.execute(sql);
 		//stmt.executeUpdate("UPDATE movie SET release_date='2000'  WHERE movie_id='mv00019';");
 		int cnum = rm.getColumnCount();
-
+		//stmt.executeUpdate("UPDATE movie SET release_date='"+time+"' WHERE movie_id='"+movie.getID()+"'");
 		while(rs.next()){
 			for(int i=1; i<=cnum; i++){
 				if(rm.getColumnName(i).equals("release_date")){

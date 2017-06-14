@@ -1,14 +1,25 @@
 package Object;
 
+
+
 public class Direct {
 	String name;
-	String ID;
 	time birthday;
 	
-	
-	public Direct(String name,String ID,time birthday){
+	public Direct(){
+		
+	}
+	public Direct(String name,time birthday){
 		this.name=name;
-		this.ID=ID;
 		this.birthday=birthday;
+	}
+	public void setName(String name){
+		this.name=name;
+	}
+	public void setBirth(time birthday){
+		this.birthday=birthday;
+	}
+	public String getName(){
+		return name;
 	}
 }
