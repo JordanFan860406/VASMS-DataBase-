@@ -39,10 +39,10 @@ public class DownloadPanel extends JPanel {
 	JPanel Panel;
 	JPanel Panel1;
 	String select;
-	String [] b={"選擇年份", "2005", "2006", "2007", "2008", "2009", "2010", "2011",
+	String [] b={"所有年份", "2005", "2006", "2007", "2008", "2009", "2010", "2011",
 			"2012", "2013", "2014", "2015", "2005~2015", "2016", "2017"};
-	String [] c={"選擇類型","驚悚","動作","愛情"};
-	String [] d={"選擇月份", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+	String [] c={"所有類型","驚悚","動作","愛情"};
+	String [] d={"所有月份", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
 	public DownloadPanel(DB_connect DB){
 		initialize();
 		this.DB = DB;
@@ -105,11 +105,13 @@ public class DownloadPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
+					reList.removeAll();
 					year = Year.getSelectedItem().toString();
 					mvType = movieType.getSelectedItem().toString();
 					getMonth = month.getSelectedItem().toString();
 					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, getMonth, mvType);
 					reList.setListData(tmpList.toArray());
+					dwName.setText("");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -145,14 +147,13 @@ public class DownloadPanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
-				dwName.removeAll();
 				if(!e.getValueIsAdjusting()){
 					int index = reList.getSelectedIndex();
-					String temp = reList.getSelectedValue().toString();
-					String []tempArr = temp.split(":");
-					String []reArr = tempArr[1].split(" ");
-					mvName = reArr[1];
 					try {
+						String temp = reList.getSelectedValue().toString();
+						String []tempArr = temp.split(":");
+						String []reArr = tempArr[1].split(" ");
+						mvName = reArr[1];
 						ArrayList<String> rsList = DB.getDownloadDB().downloadName(mvName);
 						dwName.setText("");
 						for(int i=0 ; i<rsList.size() ; i++){

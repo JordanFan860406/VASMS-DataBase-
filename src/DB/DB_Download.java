@@ -16,13 +16,13 @@ public class DB_Download {
 		ArrayList<String> resultList = new ArrayList<String>();
 		ArrayList<String> where = new ArrayList<String>();
 		String find = "Select title, count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
-		if(!year.equals("選擇年份") ){
+		if(!year.equals("所有年份") ){
 			where.add("year(download_date)='" +  year + "' ");
 		}
-		if(!month.equals("選擇月份")){
+		if(!month.equals("所有月份")){
 			where.add("month(download_date)='" + month + "' ");
 		}
-		if(!type.equals("選擇類型")){
+		if(!type.equals("所有類型")){
 			where.add("movie_genres='" + type + "' ");
 		}
 		if(where.size()>0){
