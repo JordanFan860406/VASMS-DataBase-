@@ -13,8 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import DB.DB_connect;
 
@@ -24,10 +28,12 @@ public class DownloadPanel extends JPanel {
 	private JComboBox month;
 	private JComboBox movieType;
 	private JLabel lbYear;
+	JTextArea dwName;
 	DB_connect DB;
 	String year;
 	String mvType;
 	String getMonth;
+	String mvName;
 	JList reList;
 	JPanel searchPanel;
 	JPanel Panel;
@@ -102,7 +108,7 @@ public class DownloadPanel extends JPanel {
 					year = Year.getSelectedItem().toString();
 					mvType = movieType.getSelectedItem().toString();
 					getMonth = month.getSelectedItem().toString();
-					ArrayList<String>tmpList = DB.searchDownload(year, getMonth, mvType);
+					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, getMonth, mvType);
 					reList.setListData(tmpList.toArray());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -121,7 +127,7 @@ public class DownloadPanel extends JPanel {
 		this.add(Panel);
 		
 		JLabel lbAns=new JLabel("__________________________下載量結果_____________________________");
-		lbAns.setFont(new Font("新細明體",Font.PLAIN ,20));
+		lbAns.setFont(new Font("新細明體",Font.PLAIN ,24));
 		lbAns.setBounds(10,5,600,30);
 		Panel.add(lbAns);
 		
@@ -134,7 +140,46 @@ public class DownloadPanel extends JPanel {
 		Panel1.setBackground(Color.white);
 		Panel.add(reList);
 		
+		reList.addListSelectionListener(new ListSelectionListener(){
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				dwName.removeAll();
+				if(!e.getValueIsAdjusting()){
+					int index = reList.getSelectedIndex();
+					String temp = reList.getSelectedValue().toString();
+					String []tempArr = temp.split(":");
+					String []reArr = tempArr[1].split(" ");
+					mvName = reArr[1];
+					try {
+						ArrayList<String> rsList = DB.getDownloadDB().downloadName(mvName);
+						dwName.setText("");
+						for(int i=0 ; i<rsList.size() ; i++){
+							dwName.append(rsList.get(i) + "\n");
+						}
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+			
+		});
 		
+	
+		
+		JLabel dwData = new JLabel("下載詳細資料");
+		dwData.setFont(new Font("新細明體",Font.PLAIN ,36));
+		dwData.setBounds(650, 180, 250, 50);
+		this.add(dwData);
+		
+		dwName = new JTextArea();
+		dwName.setFont(new Font("新細明體",Font.PLAIN ,18));
+		dwName.setBounds(630, 240, 350, 550);
+		dwName.setEnabled(false);
+		dwName.setDisabledTextColor(Color.BLACK);
+		this.add(dwName);
 	}
 	
 	

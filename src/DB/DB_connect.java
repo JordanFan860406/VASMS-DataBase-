@@ -14,12 +14,14 @@ public class DB_connect {
 	DB_Movie MovieDB;
 	DB_Actor ActorDB;
 	DB_Geners GenresDB;
+	DB_Download DownloadDB;
 	
 	public DB_connect() throws Exception{
 		connect();
 		this.MovieDB=new DB_Movie(this);
 		this.ActorDB=new DB_Actor(this);
 		this.GenresDB=new DB_Geners(this);
+		this.DownloadDB = new DB_Download(this);
 	}
 	
 	void connect()throws Exception{
@@ -43,50 +45,12 @@ public class DB_connect {
 		
 		return GenresDB;
 	}
+	
+	public DB_Download getDownloadDB(){
+		
+		return DownloadDB;
+	}
 
-	public ArrayList<String> searchDownload(String year, String month, String type) throws Exception{
-		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
-		String [] arr = {"","電影名稱", "下載次數"};
-		ArrayList<String> resultList = new ArrayList<String>();
-		ArrayList<String> where = new ArrayList<String>();
-		String find = "Select title, count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
-		if(!year.equals("選擇年份") ){
-			where.add("year(download_date)='" +  year + "' ");
-		}
-		if(!month.equals("選擇月份")){
-			where.add("month(download_date)='" + month + "' ");
-		}
-		if(!type.equals("選擇類型")){
-			where.add("movie_genres='" + type + "' ");
-		}
-		if(where.size()>0){
-			find += "where ";
-		}
-		for(int i=0;i<where.size();i++){
-			find+=where.get(i);
-			if(where.size()!=i+1){
-				find+="and ";
-			}
-		}
-		find +="group by title order by downloadtime desc";
-		ResultSet rs = stmt.executeQuery(find);
-		ResultSetMetaData rm = rs.getMetaData();
-
-		int cnum = rm.getColumnCount();
-
-		while(rs.next())
-		{
-			String resultS = "";
-		for(int i=1; i<=cnum; i++)
-		{	
-			resultS += arr[i]+" : "+rs.getObject(i) + "  ";
-			System.out.print(resultS);
-		}
-		resultList.add(resultS);
-		System.out.println("");
-		}
-		return resultList;
-		}
 	
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
