@@ -4,7 +4,7 @@ public class member {
 	String name;
 	String ID;
 	time birthday;
-	int pay=0;
+	String pay="0";
 	String sex;
 	
 	
@@ -28,7 +28,7 @@ public class member {
 	public void setBir(time birthday){
 		this.birthday=birthday;
 	}
-	public void setPay(int pay){
+	public void setPay(String pay){
 		this.pay=pay;
 	}
 	public String  getSex(){
@@ -42,5 +42,8 @@ public class member {
 	}
 	public time  getBir(){
 		return birthday;
+	}
+	public String  getPay(){
+		return pay;
 	}
 }

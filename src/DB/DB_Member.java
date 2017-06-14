@@ -18,12 +18,15 @@ public class DB_Member {
 		this.DB=DB;
 		this.stmt=DB.stmt;
 	}
-	public ArrayList<member>searchAllMember() throws SQLException{
+	public ArrayList<member>searchAllMember(String name) throws SQLException{
 		ArrayList<member> memberArray=new ArrayList<member>();
-		ResultSet rs = stmt.executeQuery("SELECT * From member");
+		String find="SELECT * From member ";
+		if(!name.equals("")){
+			find+="where member_name='"+name+"'";
+		}
+		ResultSet rs = stmt.executeQuery(find);
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
-		
 		while(rs.next()){
 			member member=new member();
 			
@@ -50,38 +53,27 @@ public class DB_Member {
 			
 		}
 		
-		return memberArray;
+		return searchAllMember(memberArray);
 	}
-	public ArrayList<member>searchAllMember(ArrayList memberArray) throws SQLException{
+	public ArrayList<member>searchAllMember(ArrayList<member> memberArray) throws SQLException{
 	
 		ResultSet rs = stmt.executeQuery("SELECT member_name,sum(per_charge) From movie natural join buy natural join member group by member_id");
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
 		
 		while(rs.next()){
-			member member=new member();
 			
-			for(int i=1; i<=cnum; i++){
-				switch(rm.getColumnName(i)){
-				case"actor_name":
-					member.setName(rs.getObject(i).toString());
-					break;
-				case"actor_birthday":
-					String[] str = rs.getObject(i).toString().split("-");
-					member.setBir(new time(Integer.valueOf(str[0]),Integer.valueOf(str[1]),Integer.valueOf(str[2])));
-					break;
-				case"actor_sex":
-					member.setsex(rs.getObject(i).toString());
-					break;
-				case"member_id":
-					member.setID(rs.getObject(i).toString());
-					break;
+			for(int i=1; i<=cnum; i+=2){
+				if(rm.getColumnName(i).equals("member_name")){
+					for(member j:memberArray){
+						if(j.getName().equals(rs.getObject(i).toString())){
+							j.setPay(rs.getObject(i+1).toString());
+						}
+					}
 				}
-			
+	
 			}
-
-			memberArray.add(member);
-			
+	
 		}
 		
 		return memberArray;
