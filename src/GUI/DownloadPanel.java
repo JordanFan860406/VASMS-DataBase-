@@ -172,7 +172,7 @@ public class DownloadPanel extends JPanel {
 		Panel.setLayout(null);
 		this.add(Panel);
 		
-		JLabel lbAns=new JLabel("__________________________下載量結果_____________________________");
+		JLabel lbAns=new JLabel("____________________下載量結果_________________________________");
 		lbAns.setFont(new Font("新細明體",Font.PLAIN ,24));
 		lbAns.setBounds(10,5,600,30);
 		Panel.add(lbAns);
