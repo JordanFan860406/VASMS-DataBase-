@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import DB.DB_Movie;
 import DB.DB_connect;
 import Object.Actor;
 import Object.Movie;
@@ -41,6 +42,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 	String [] a={"所有類型"};
 	String [] b={"所有年代","2017","2005~2015","2016"};
 	String [] c={"所有演員"};
+	
 	public MoviePanel(DB_connect DB) throws Exception{
 		initialize();
 		this.DB=DB;
@@ -48,12 +50,12 @@ public class MoviePanel extends JPanel implements ActionListener{
 	}
 	
 	void updateData(DB_connect DB) throws Exception{
-		ArrayList<String> genresArray=DB.searchGenres();
+		ArrayList<String> genresArray=DB.getGenresDB().searchGenres();
 		for(String i:genresArray){
 			type.addItem(i);
 			//System.out.print(i);
 		}
-		ArrayList<Actor> actorArray=DB.searchActor();
+		ArrayList<Actor> actorArray=DB.getActorDB().searchActor();
 		for(Actor i:actorArray){
 			actor.addItem(i.getName());
 		}
@@ -172,7 +174,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 		GBC.weighty = 0;
 		GBC.fill = GridBagConstraints.HORIZONTAL;
 		
-		ArrayList<Movie> movieArray=DB.searchMovie(name,type,year,actor);
+		ArrayList<Movie> movieArray=DB.getMovieDB().searchMovie(name,type,year,actor);
 		
 		for(Movie i:movieArray){
 			Panel1.add(new MovieSearchPanel(i,DB),GBC);

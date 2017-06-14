@@ -30,7 +30,9 @@ public class Movie {
 		this.company=company;
 	}
 	
-	
+	public String getID(){
+		return ID;
+	}
 	public String getTitle(){
 		return title;
 	}

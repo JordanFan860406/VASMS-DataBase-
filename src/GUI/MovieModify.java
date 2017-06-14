@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Company;
 import Object.Movie;
+import Object.time;
 
 public class MovieModify extends JFrame implements ActionListener{
 	JLabel lb = new JLabel("電影名稱:");
@@ -152,6 +155,13 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfday.setText(String.valueOf(movie.getTime().getDay()));
 		tfmon.setText(String.valueOf(movie.get()));
 	}
+	public void modifyData() throws SQLException{
+		movie.setTitle(tfName.getText());
+		movie.setCompany(new Company(tfcom.getText(),tfadd.getText()));
+		movie.setTime(new time(Integer.parseInt(tfyear.getText()),Integer.parseInt(tfmonth.getText()),Integer.parseInt(tfday.getText())));
+		movie.setcharge(Integer.parseInt(tfmon.getText()));
+		DB.getMovieDB().updateMovie(movie);
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -161,7 +171,12 @@ public class MovieModify extends JFrame implements ActionListener{
 			break;
 		
 		case"儲存後關閉":
-			
+			try {
+				modifyData();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			this.dispose();
 			break;
 		case"取消":
