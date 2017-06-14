@@ -38,7 +38,7 @@ public class DownloadPanel extends JPanel {
 	JPanel searchPanel;
 	JPanel Panel;
 	JPanel Panel1;
-	String select;
+	String getMvName;
 	String [] b={"所有年份", "2005", "2006", "2007", "2008", "2009", "2010", "2011",
 			"2012", "2013", "2014", "2015", "2005~2015", "2016", "2017"};
 	String [] c={"所有類型","驚悚","動作","愛情"};
@@ -111,7 +111,7 @@ public class DownloadPanel extends JPanel {
 					getMonth = month.getSelectedItem().toString();
 					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, getMonth, mvType);
 					reList.setListData(tmpList.toArray());
-//					dwName.setText("");
+					dwName.removeAll();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -150,7 +150,17 @@ public class DownloadPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				String[]arr = dwName.getSelectedValue().toString().split(" : ");
+				System.out.println(getMvName);
+				String[]arr2 = arr[1].split("  ");
+				try {
+					ArrayList<String>seId = DB.getDownloadDB().searchID(arr2[0], getMvName);
+					DB.getDownloadDB().deleteDownLoad(seId.get(0), seId.get(1), arr[2]);
+					dwName.repaint();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -184,10 +194,12 @@ public class DownloadPanel extends JPanel {
 				if(!e.getValueIsAdjusting()){
 					int index = reList.getSelectedIndex();
 					try {
+						dwName.removeAll();
 						String temp = reList.getSelectedValue().toString();
 						String []tempArr = temp.split(":");
 						String []reArr = tempArr[1].split(" ");
 						mvName = reArr[1];
+						getMvName = mvName;
 						ArrayList<String> rsList = DB.getDownloadDB().downloadName(mvName);
 //						for(int i=0 ; i<rsList.size() ; i++){
 						dwName.setListData(rsList.toArray());

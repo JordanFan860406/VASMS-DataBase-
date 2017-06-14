@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 
 import DB.DB_connect;
 import Object.Movie;
+import Object.member;
 
 public class DownloadInsert extends JFrame implements ActionListener {
 	JLabel lbName = new JLabel("會員名稱:");
@@ -108,6 +110,9 @@ public class DownloadInsert extends JFrame implements ActionListener {
 	public void getData() throws Exception{
 		for(Movie i : DB.getMovieDB().searchMovie("", "所有類型", "所有年代" , "所有演員")){
 			mvName.addItem(i.getTitle());
+		}
+		for(member j : DB.getMemberDB().searchAllMember("")){
+			memName.addItem(j.getName());
 		}
 	}
 	

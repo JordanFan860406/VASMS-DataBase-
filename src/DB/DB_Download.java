@@ -103,8 +103,8 @@ public class DB_Download {
 		stmt.executeUpdate(sql);
 	}
 	
-	public void deleteDownLoad(){
-		String sql = "";
-		
+	public void deleteDownLoad(String memId, String mvId, String Date)throws Exception{
+		String sql = "DELETE FROM buy where member_id='" + memId +"' and movie_id='"+ mvId +"' and download_date='" + Date +"'";
+		stmt.executeQuery(sql);
 	}
 }
