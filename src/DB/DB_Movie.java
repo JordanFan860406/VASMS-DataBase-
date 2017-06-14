@@ -53,7 +53,7 @@ public class DB_Movie {
 		stmt.execute(sql);
 	}
 	
-	public  ArrayList<Movie> searchMovieNumber() throws SQLException{
+	/*public  ArrayList<Movie> searchMovieNumber() throws SQLException{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
 		ResultSet rs = stmt.executeQuery("SELECT * From movie");
 		ResultSetMetaData rm = rs.getMetaData();
@@ -86,7 +86,7 @@ public class DB_Movie {
 		}
 		
 		return movieArray;
-	}
+	}*/
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
 		String find="SELECT * From movie natural join manufacture natural join company natural join genres natural join direct ";

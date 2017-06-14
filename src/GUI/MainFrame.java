@@ -101,7 +101,7 @@ public class MainFrame implements ActionListener{
 			
 			break;
 		case"會員":
-			JPanel  MemberPanel=new MemberPanel();
+			JPanel  MemberPanel=new MemberPanel(DB);
 			mainPanel.removeAll();
 			mainPanel.add(MemberPanel);
 			mainPanel.updateUI();

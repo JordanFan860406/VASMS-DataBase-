@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,6 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import DB.DB_connect;
+import Object.Movie;
+import Object.member;
+
 public class MemberPanel extends JPanel implements ActionListener{
 	private JTextField tfName;
 	private JComboBox type;
@@ -23,11 +29,15 @@ public class MemberPanel extends JPanel implements ActionListener{
 	JButton btnDelete= new JButton("刪除");
 	JPanel searchPanel;
 	JPanel MovieSearchPanel;
+	DB_connect DB;
 	JPanel Panel;
 	JPanel Panel1;
+	ArrayList<MemberSearchPanel> seapan=new ArrayList<MemberSearchPanel>();
+	ArrayList<member> memberArray;
 	String [] a={"所有類型","前10付錢最多"};
-	public MemberPanel(){
+	public MemberPanel(DB_connect DB){
 		initialize();
+		this.DB=DB;
 	}
 	
 	
@@ -108,7 +118,47 @@ public class MemberPanel extends JPanel implements ActionListener{
 		
 		
 	}
-
+	public void search(String name,String str) throws SQLException{
+		Panel1.removeAll();
+		Panel1.setLayout(new GridBagLayout() );
+		Panel1.setBackground(Color.lightGray);
+		GridBagConstraints GBC= new GridBagConstraints();
+		GBC.insets = new Insets(1,1,1,1);
+		GBC.gridheight = 1;
+		GBC.gridwidth = 0;
+		GBC.weightx = 1;
+		GBC.weighty = 0;
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		ArrayList<member> memberArray=DB.getMemberDB().searchAllMember(name);
+		if(str.equals("所有類型")){
+			for(member i:memberArray){
+				MemberSearchPanel mov= new MemberSearchPanel(i,DB);
+				seapan.add(mov);
+				Panel1.add(mov,GBC);
+			}
+		}
+		else{
+			for(int k=0;k<10;k++){
+				int money=0;
+				member member=null ;
+				for(member i:memberArray){
+					if( Integer.valueOf(i.getPay())>money){
+						money=Integer.valueOf(i.getPay());
+						member=i;
+					}
+				}
+				if(member!=null){
+					MemberSearchPanel mov= new MemberSearchPanel(member,DB);
+					seapan.add(mov);
+					Panel1.add(mov,GBC);
+					memberArray.remove(member);
+				}
+			}
+		}
+		for(int i=0;i<7;i++){
+			Panel1.add(new EmptyPanel(),GBC);
+		}
+	}
 
 
 
@@ -117,32 +167,42 @@ public class MemberPanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 		case"搜尋":
-			Panel1.removeAll();
-			Panel1.setLayout(new GridBagLayout() );
-			Panel1.setBackground(Color.lightGray);
-			GridBagConstraints GBC= new GridBagConstraints();
-			GBC.insets = new Insets(1,1,1,1);
-			GBC.gridheight = 1;
-			GBC.gridwidth = 0;
-			GBC.weightx = 1;
-			GBC.weighty = 0;
-			GBC.fill = GridBagConstraints.HORIZONTAL;
-			//Panel1.add(new MovieSearchPanel("會員A"),GBC);
-			//Panel1.add(new MovieSearchPanel("會員B"),GBC);
 			
-			for(int i=0;i<10;i++){
-				//Panel1.add(new MovieSearchPanel("會員"+i),GBC);
-			}
-			for(int i=0;i<7;i++){
-				Panel1.add(new EmptyPanel(),GBC);
+			try {
+				search(tfName.getText(),type.getSelectedItem().toString());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			Panel1.updateUI();
 			break;
 		case"新增":
+			try {
+				new MemberInsert(DB);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("新增");
 			break;
 		case"刪除":
 			System.out.println("刪除");
+			for(MemberSearchPanel i:seapan){
+				if(i.getSelsec()){
+					try {
+						DB.getMemberDB().delete(i.getMember());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+				}
+			}
+			try {
+				search(tfName.getText(),type.getSelectedItem().toString());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			break;
 		}
 		

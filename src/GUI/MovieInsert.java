@@ -207,7 +207,7 @@ public class MovieInsert extends JFrame implements ActionListener{
 		}
 		else{
 			Movie movie=new Movie();
-			String ID="mv000"+String.valueOf(movieArray.size()+2);
+			String ID="mv000"+String.valueOf(movieArray.size()+1);
 			
 			movie.setID(ID);
 			movie.setTitle(tfName.getText());

@@ -16,6 +16,7 @@ public class member {
 		this.ID=ID;
 		this.birthday=birthday;
 	}
+	
 	public void setsex(String sex){
 		this.sex=sex;
 	}

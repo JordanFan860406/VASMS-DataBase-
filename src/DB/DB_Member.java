@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Object.Direct;
+import Object.Movie;
 import Object.member;
 import Object.time;
 
@@ -17,6 +18,22 @@ public class DB_Member {
 	public DB_Member(DB_connect DB){
 		this.DB=DB;
 		this.stmt=DB.stmt;
+	}
+	public void updateMember(member member) throws SQLException{
+		
+		String time=String.valueOf(member.getBir().getYear())+"-"+String.valueOf(member.getBir().getMonth())+"-"+String.valueOf(member.getBir().getDay());
+		stmt.executeUpdate("UPDATE member SET member_name = '"+member.getName()+"',member_birthday='"+time+"',member_sex='"+member.getSex()+"' WHERE member_id='"+member.getID()+"';");
+	}
+	public void insertMember(member member) throws SQLException{
+		String time=String.valueOf(member.getBir().getYear())+"-"+String.valueOf(member.getBir().getMonth())+"-"+String.valueOf(member.getBir().getDay());
+		String sql = "INSERT INTO member (member_id, member_name,member_birthday, member_sex) VALUES ('"+member.getID()+"', '"+member.getName()+"', '"+time+"', '"+member.getSex()+"')";
+		stmt.execute(sql);
+	}
+	public void delete(member member) throws SQLException{
+		String sql = "DELETE FROM member where member_id='"+member.getID()+"'";
+		stmt.execute(sql);
+		sql = "DELETE FROM buy where member_id='"+member.getID()+"'";
+		stmt.execute(sql);
 	}
 	public ArrayList<member>searchAllMember(String name) throws SQLException{
 		ArrayList<member> memberArray=new ArrayList<member>();
