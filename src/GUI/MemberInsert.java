@@ -135,7 +135,7 @@ public class MemberInsert extends JFrame implements ActionListener{
 		}
 		else{
 			member member=new member();
-			String ID="mem000"+String.valueOf(memberArray.size()+3);
+			String ID="mem000"+String.valueOf(memberArray.size()+1);
 			
 			member.setID(ID);
 			member.setName(tfName.getText());

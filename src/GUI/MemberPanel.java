@@ -158,6 +158,7 @@ public class MemberPanel extends JPanel implements ActionListener{
 		for(int i=0;i<7;i++){
 			Panel1.add(new EmptyPanel(),GBC);
 		}
+		Panel1.updateUI();
 	}
 
 
