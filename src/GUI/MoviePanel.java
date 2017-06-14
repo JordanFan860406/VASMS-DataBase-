@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -31,6 +32,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 	private JComboBox year;
 	private JComboBox sort;
 	private JComboBox actor;
+	ArrayList<MovieSearchPanel> seapan=new ArrayList<MovieSearchPanel>();
 	ArrayList<Movie> movieArray;
 	JButton btnNew= new JButton("新增");
 	JButton btnDelete= new JButton("刪除");
@@ -64,6 +66,7 @@ public class MoviePanel extends JPanel implements ActionListener{
 	void initialize() {
 		this.setSize(1000, 800);
 		this.setLayout(null);
+		this.setBackground(Color.getHSBColor(111, 75, 50));
 		
 		searchPanel=new JPanel();
 		searchPanel.setBounds(20, 20,600,200);
@@ -177,7 +180,10 @@ public class MoviePanel extends JPanel implements ActionListener{
 		ArrayList<Movie> movieArray=DB.getMovieDB().searchMovie(name,type,year,actor);
 		
 		for(Movie i:movieArray){
-			Panel1.add(new MovieSearchPanel(i,DB),GBC);
+			
+			MovieSearchPanel mov= new MovieSearchPanel(i,DB);
+			seapan.add(mov);
+			Panel1.add(mov,GBC);
 		}
 		for(int i=0;i<7;i++){
 			Panel1.add(new EmptyPanel(),GBC);
@@ -203,10 +209,36 @@ public class MoviePanel extends JPanel implements ActionListener{
 			}
 			break;
 		case"新增":
+			try {
+				new MovieInsert(DB);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("新增");
 			break;
 		case"刪除":
 			System.out.println("刪除");
+			for(MovieSearchPanel i:seapan){
+				if(i.getSelsec()){
+					try {
+						DB.getMovieDB().delete(i.getMovie());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+				}
+			}
+			String name=tfName.getText();
+			String genres=type.getSelectedItem().toString();
+			String years=year.getSelectedItem().toString();
+			String actors=actor.getSelectedItem().toString();
+			try {
+				search(name,genres,years,actors,DB);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			break;
 		}
 		

@@ -17,4 +17,10 @@ public class Company {
 	public void setAdress(String adress){
 		this.adress=adress;
 	}
+	public String getName(){
+		return name;
+	}
+	public String getAddress(){
+		return adress;
+	}
 }

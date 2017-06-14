@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,9 +22,9 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 	JLabel jlName;
 	JRadioButton radioButton;
 	JButton jb;
-	boolean select=false;
 	DB_connect DB;
 	Movie movie;
+	boolean isselect=false;
 	public MovieSearchPanel(Movie movie,DB_connect DB){
 		initialize();
 		this.jlName.setText("名稱:"+movie.getTitle());
@@ -62,21 +63,32 @@ public class MovieSearchPanel extends JPanel implements ActionListener{
 		jb.addActionListener(new ActionListener(){ 
 			public void actionPerformed(ActionEvent e) 
 			{ 
-				new MovieModify(DB,movie);
+				try {
+					new MovieModify(DB,movie);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			} 
 		}); 
 	}
-
+	public boolean getSelsec(){
+		return isselect;
+	}
+	public Movie getMovie(){
+		return movie;
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 			if(radioButton.isSelected()){  
 				this.setBackground(Color.lightGray);
 				radioButton.setBackground(Color.lightGray);
-			
+				isselect=true;
 			}
 			else{
 				this.setBackground(Color.white);
 				radioButton.setBackground(Color.white);
+				isselect=false;
 			}
 			this.updateUI();
 			

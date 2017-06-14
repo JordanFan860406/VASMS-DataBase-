@@ -10,12 +10,16 @@ public class Movie {
 	Company company;
 	Direct direct;
 	time publishTime;
+	String geners;
 	
 	public Movie(){
 		
 	}
 	public void setTitle(String title){
 		this.title=title;
+	}
+	public void setGeners(String geners){
+		this.geners=geners;
 	}
 	public void setID(String ID){
 		this.ID=ID;
@@ -29,9 +33,15 @@ public class Movie {
 	public void setCompany(Company company){
 		this.company=company;
 	}
+	public void setDirect(Direct direct){
+		this.direct=direct;
+	}
 	
 	public String getID(){
 		return ID;
+	}
+	public String getgeners(){
+		return geners;
 	}
 	public String getTitle(){
 		return title;
@@ -47,5 +57,11 @@ public class Movie {
 	}
 	public int get(){
 		return charge;
+	}
+	public String getdirectName(){
+		return direct.getName();
+	}
+	public time getdirectBir(){
+		return direct.birthday;
 	}
 }
