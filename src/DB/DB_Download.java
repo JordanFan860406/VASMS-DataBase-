@@ -12,10 +12,10 @@ public class DB_Download {
 	
 	public ArrayList<String> searchDownload(String year, String month, String type) throws Exception{
 		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
-		String [] arr = {"","電影名稱", "下載次數"};
+		String [] arr = {"","電影名稱","月份", "下載次數"};
 		ArrayList<String> resultList = new ArrayList<String>();
 		ArrayList<String> where = new ArrayList<String>();
-		String find = "Select title, count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
+		String find = "Select title, month(download_date) ,count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
 		if(!year.equals("所有年份") ){
 			where.add("year(download_date)='" +  year + "' ");
 		}
