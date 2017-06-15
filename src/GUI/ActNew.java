@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -97,12 +98,21 @@ public class ActNew extends JFrame implements ActionListener{
 		String act = jbActor.getSelectedItem().toString();
 		String movie = jbMovie.getSelectedItem().toString();
 		String role = tfRole.getText();
+		String id = DB.getActorDB().searchID(movie);
+		System.out.println(id);
+		DB.getActorDB().insertAct(id, act, role);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
 			case"儲存後離開":
+			try {
+				insert();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				this.dispose();
 				break;
 			case"取消":

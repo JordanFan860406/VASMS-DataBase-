@@ -17,9 +17,35 @@ public class DB_Actor {
 		this.stmt=DB.stmt;
 	}
 	
+	public void insertAct(String movie, String name, String role) throws Exception{
+		String sql = "INSERT INTO act (movie_id, actor_name, role) VALUES ('"+movie+"', '"+name+"', "+"'"+role+"'"+")";
+		stmt.execute(sql);
+	}
+	
 	public void insertActor(String name, String birth, String sex) throws Exception{
 		String sql = "INSERT INTO actor (actor_name, actor_birthday, actor_sex) VALUES ('"+name+"', '"+birth+"', "+"'"+sex+"'"+")";
 		stmt.execute(sql);
+	}
+	
+	public String searchID(String movieName) throws SQLException{
+		String findMv = "Select movie_id From movie where title='"+ movieName +"'";
+		ArrayList<String>conList = new ArrayList<String>();
+		ResultSet rs = stmt.executeQuery(findMv);
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+
+		while(rs.next())
+		{
+			String resultS = "";
+		for(int i=1; i<=cnum; i++)
+		{	
+			
+			conList.add(rs.getObject(i).toString());
+		}
+		
+		System.out.println("");
+		}
+		return conList.get(0);
 	}
 	
 	public void deleteActor(String name)throws Exception{
