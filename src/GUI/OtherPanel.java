@@ -3,13 +3,15 @@ package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import DB.DB_connect;
 
-public class OtherPanel extends JPanel{
+public class OtherPanel extends JPanel {
 	DB_connect DB;
 	JButton comInsert;
 	JButton comRemove;
@@ -46,11 +48,33 @@ public class OtherPanel extends JPanel{
 		comInsert.setBounds(50, 100, 310, 110);
 		comInsert.setFont(new Font("標楷體",Font.PLAIN ,48));
 		comPanel.add(comInsert);
+		comInsert.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new CompanyInsert(DB);
+			}
+			
+		});
+		
 		
 		comRemove = new JButton("刪除");
 		comRemove.setBounds(50, 230, 310, 110);
 		comRemove.setFont(new Font("標楷體",Font.PLAIN ,48));
 		comPanel.add(comRemove);
+		comRemove.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					new CompanyDelete(DB);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		
 		dirPanel = new JPanel();
 		dirPanel.setBounds(20, 420, 430, 350);
@@ -67,11 +91,33 @@ public class OtherPanel extends JPanel{
 		dirInsert.setBounds(50, 100, 310, 110);
 		dirInsert.setFont(new Font("標楷體",Font.PLAIN ,48));
 		dirPanel.add(dirInsert);
+		dirInsert.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new DirectorInsert(DB);
+			}
+			
+		});
 		
 		dirRemove = new JButton("刪除");
 		dirRemove.setBounds(50, 230, 310, 110);
 		dirRemove.setFont(new Font("標楷體",Font.PLAIN ,48));
 		dirPanel.add(dirRemove);
+		dirRemove.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					new DirectorDelete(DB);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		
 		actPanel = new JPanel();
 		actPanel.setBounds(480, 20, 500, 750);
@@ -88,15 +134,52 @@ public class OtherPanel extends JPanel{
 		actorInsert.setBounds(100, 150, 310, 150);
 		actorInsert.setFont(new Font("標楷體",Font.PLAIN ,48));
 		actPanel.add(actorInsert);
+		actorInsert.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new ActorInsert(DB);
+			}
+			
+		});
 		
 		actorRemove = new JButton("刪除");
 		actorRemove.setBounds(100, 550, 310, 150);
 		actorRemove.setFont(new Font("標楷體",Font.PLAIN ,48));
 		actPanel.add(actorRemove);
+		actorRemove.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					new ActorDelete(DB);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		
 		btnAct = new JButton("演出");
 		btnAct.setBounds(100, 350, 310, 150);
 		btnAct.setFont(new Font("標楷體",Font.PLAIN ,48));
 		actPanel.add(btnAct);
+		btnAct.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					new ActNew(DB);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 	}
+
 }

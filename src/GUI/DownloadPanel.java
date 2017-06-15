@@ -51,6 +51,7 @@ public class DownloadPanel extends JPanel {
 	void initialize(){
 		this.setSize(1000, 800);
 		this.setLayout(null);
+		this.setBackground(Color.CYAN);;
 		
 		searchPanel=new JPanel();
 		searchPanel.setBounds(20, 20,600,200);

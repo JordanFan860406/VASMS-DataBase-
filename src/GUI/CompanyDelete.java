@@ -11,22 +11,21 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Company;
 
-public class CompanyInsert extends JFrame implements ActionListener{
-	
+public class CompanyDelete extends JFrame implements ActionListener{
+	JLabel lbFrame = new JLabel("刪除公司資料");
 	JLabel lbCom = new JLabel("公司名稱:");
-	JLabel lbAddress = new JLabel("公司地址:");
-	JLabel lbFrame = new JLabel("公司資料新增");
-	JTextField tfCom ;
-	JTextField tfAddress;
-	JButton btnInsert;
+	JComboBox jbCom ;
+	String[]com = {"請選擇公司"};
+	JButton btnDelete;
 	JButton btnCancel;
 	DB_connect DB;
 	
-	
-	public CompanyInsert(DB_connect DB){
+	public CompanyDelete(DB_connect DB) throws Exception{
 		this.DB = DB;
 		initialize();
+		setData();
 	}
 	
 	void initialize(){
@@ -34,6 +33,7 @@ public class CompanyInsert extends JFrame implements ActionListener{
 		this.setLayout(null);
 		this.setVisible(true);
 		
+
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
 		this.add(lbFrame);
@@ -42,25 +42,16 @@ public class CompanyInsert extends JFrame implements ActionListener{
 		lbCom.setBounds(10, 110,150,50);
 		this.add(lbCom);
 		
-		tfCom = new JTextField();
-		tfCom.setBounds(130, 110, 250,50);
-		tfCom.setFont(new Font("新細明體",Font.PLAIN ,20));
-		this.add(tfCom);
+		jbCom = new JComboBox(com);
+		jbCom.setBounds(130, 110, 330,50);
+		jbCom.setFont(new Font("新細明體",Font.PLAIN ,24));
+		this.add(jbCom);
 		
-		lbAddress.setFont(new Font("新細明體",Font.PLAIN ,24));
-		lbAddress.setBounds(10, 210,150,50);
-		this.add(lbAddress);
-		
-		tfAddress = new JTextField();
-		tfAddress.setBounds(130, 210, 250,50);
-		tfAddress.setFont(new Font("新細明體",Font.PLAIN ,28));
-		this.add(tfAddress);
-		
-		btnInsert = new JButton("儲存後離開");
-		btnInsert.setBounds(50, 310, 160, 100);
-		btnInsert.setFont(new Font("新細明體",Font.PLAIN ,24));
-		this.add(btnInsert);
-		btnInsert.addActionListener(this);
+		btnDelete = new JButton("刪除後離開");
+		btnDelete.setBounds(50, 310, 160, 100);
+		btnDelete.setFont(new Font("新細明體",Font.PLAIN ,24));
+		this.add(btnDelete);
+		btnDelete.addActionListener(this);
 		
 		btnCancel = new JButton("取消");
 		btnCancel.setBounds(250, 310, 160, 100);
@@ -70,12 +61,18 @@ public class CompanyInsert extends JFrame implements ActionListener{
 		
 	}
 	
+	public void setData() throws Exception{
+		for(Company i : DB.getCompanyDB().searchAllCom()){
+			jbCom.addItem(i.getName());
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
-		
-			case"儲存後離開":
+			
+			case"刪除後離開":
 				this.dispose();
 				break;
 			case"取消":
