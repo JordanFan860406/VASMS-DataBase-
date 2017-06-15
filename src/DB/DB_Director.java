@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import Object.Company;
 import Object.Direct;
+import Object.Movie;
 import Object.time;
 
 public class DB_Director {
@@ -17,6 +18,18 @@ public class DB_Director {
 	public DB_Director(DB_connect DB){
 		this.DB=DB;
 		this.stmt=DB.stmt;
+	}
+	public void delete(Direct direct) throws SQLException{
+		String sql = "DELETE FROM director where director_name='"+direct.getName()+"'";
+		stmt.execute(sql);
+		sql = "DELETE FROM direct where director_name='"+direct.getName()+"'";
+		stmt.execute(sql);
+	}
+	public void insertDirector(Direct direct) throws SQLException{
+		String time=String.valueOf(direct.getTime().getYear())+"-"+String.valueOf(direct.getTime().getMonth())+"-"+String.valueOf(direct.getTime().getDay());
+		
+		String sql = "INSERT INTO director (director_name,director_birthday, director_sex) VALUES ('"+direct.getName()+"','"+time+"', '"+direct.getSex()+"')";
+		stmt.execute(sql);
 	}
 	public ArrayList<Direct>searchAllDirector() throws SQLException{
 		ArrayList<Direct> DirectArray=new ArrayList<Direct>();

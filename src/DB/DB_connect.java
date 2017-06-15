@@ -80,7 +80,7 @@ public class DB_connect {
         //stmt.executeUpdate("INSERT INTO member VALUES ('mem00002', 'Jordan Fan', '1997-8-9', 'boy')");
 		String a="where ";
 		String b="Lady Gaga";
-		ResultSet rs = stmt.executeQuery("SELECT member_name,actor_name ,count(actor_name) From buy natural join member natural join act natural join actor  natural join movie where actor_sex='girl' group by member_name,actor_name");
+		ResultSet rs = stmt.executeQuery("SELECT actor_name,role From act natural join actor where movie_id='mv00001'");
 		ResultSetMetaData rm = rs.getMetaData();
 		//String sql = "INSERT INTO manufacture (movie_id, company_name) VALUES ('mv00020', 'Jang')";
 		//stmt.execute(sql);

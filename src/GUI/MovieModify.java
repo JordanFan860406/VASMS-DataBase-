@@ -8,14 +8,20 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Character1;
 import Object.Company;
 import Object.Direct;
 import Object.Movie;
@@ -28,6 +34,7 @@ public class MovieModify extends JFrame implements ActionListener{
 	JLabel lb3 = new JLabel("出版時間:");
 	JLabel lb4 = new JLabel("價格:");
 	JTextField tfName;
+	ArrayList<String> actor =new ArrayList<String>();
 	private JTextField tfcom;
 	private JTextField tfadd;
 	private JTextField tfyear;
@@ -35,6 +42,8 @@ public class MovieModify extends JFrame implements ActionListener{
 	private JTextField tfday;
 	private JTextField tfmon;
 	private JTextField tfgen;
+	Vector ListVector;    
+	JList jl;
 	JComboBox director;
 	JComboBox com;
 	JButton jbEnter;
@@ -161,6 +170,12 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfgen.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(tfgen);
 		
+		jl=new JList();
+		JScrollPane scrollPane=new JScrollPane(jl);
+		jl.setFont(new Font("新細明體",Font.PLAIN ,24));
+		scrollPane.setBounds(250,480,200,200);
+		this.add(scrollPane);
+		
 		jbEdit=new JButton();
 		jbEdit.setBounds(10, 600,200, 70);
 		this.add(jbEdit);
@@ -219,6 +234,12 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfday.setText(String.valueOf(movie.getTime().getDay()));
 		tfmon.setText(String.valueOf(movie.get()));
 		tfgen.setText(movie.getgeners());
+		ListVector = new Vector();
+		for(Character1 c:movie.getCharacter()){
+			String str1="演員:"+c.getActor().getName()+" \n飾演:"+c.getRole();
+			ListVector.add(str1);
+		}
+		jl.setListData(ListVector);
 	}
 	public void modifyData() throws SQLException{
 		movie.setTitle(tfName.getText());
