@@ -6,7 +6,8 @@ public class member {
 	time birthday;
 	String pay="0";
 	String sex;
-	
+	String favActress=" ";
+	String favActor=" ";
 	
 	public member(){
 		
@@ -16,7 +17,12 @@ public class member {
 		this.ID=ID;
 		this.birthday=birthday;
 	}
-	
+	public void setactress(String favActress){
+		this.favActress=favActress;
+	}
+	public void setfavActor(String favActor){
+		this.favActor=favActor;
+	}
 	public void setsex(String sex){
 		this.sex=sex;
 	}
@@ -46,5 +52,11 @@ public class member {
 	}
 	public String  getPay(){
 		return pay;
+	}
+	public String getActress(){
+		return favActress;
+	}
+	public String getfavActor(){
+		return favActor;
 	}
 }

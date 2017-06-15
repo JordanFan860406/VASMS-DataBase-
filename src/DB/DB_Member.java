@@ -93,6 +93,47 @@ public class DB_Member {
 	
 		}
 		
+		return searchAllMember1(memberArray);
+	}
+	public ArrayList<member>searchAllMember1(ArrayList<member> memberArray) throws SQLException{
+		
+		ResultSet rs = stmt.executeQuery("SELECT member_name,actor_name From buy natural join member natural join act natural join actor  natural join movie where actor_sex='girl' group by member_name,actor_name");
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+		
+		while(rs.next()){
+			
+			for(int i=1; i<=cnum; i+=2){
+				if(rm.getColumnName(i).equals("member_name")){
+					for(member j:memberArray){
+						if(j.getName().equals(rs.getObject(i).toString())){
+							j.setactress(rs.getObject(i+1).toString());
+						}
+					}
+				}
+	
+			}
+	
+		}
+		rs = stmt.executeQuery("SELECT member_name,actor_name From buy natural join member natural join act natural join actor  natural join movie where actor_sex='boy' group by member_name,actor_name");
+		rm = rs.getMetaData();
+		cnum = rm.getColumnCount();
+		
+		while(rs.next()){
+			
+			for(int i=1; i<=cnum; i+=2){
+				if(rm.getColumnName(i).equals("member_name")){
+					for(member j:memberArray){
+						if(j.getName().equals(rs.getObject(i).toString())){
+							j.setfavActor(rs.getObject(i+1).toString());
+						}
+					}
+				}
+	
+			}
+	
+		}
+		
 		return memberArray;
 	}
 }
