@@ -134,7 +134,7 @@ public class DB_Movie {
 			}
 			movie.setDirect(director);
 			movie.setCompany(com);
-			movieArray.add(movie);
+			movieArray.add(searchAct(movie));
 		}
 		
 		return movieArray;

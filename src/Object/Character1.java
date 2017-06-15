@@ -11,4 +11,12 @@ public class Character1 {
 	public Character1(){
 		
 	}
+	public Actor getActor(){
+		return actor;
+	}
+	
+	public String getRole(){
+		return name;
+	}
+	
 }

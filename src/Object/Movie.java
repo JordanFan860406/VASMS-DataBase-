@@ -37,6 +37,7 @@ public class Movie {
 		this.direct=direct;
 	}
 	public void setCharacter(Character1 Character){
+		
 		actArray.add(Character);
 	}
 	
