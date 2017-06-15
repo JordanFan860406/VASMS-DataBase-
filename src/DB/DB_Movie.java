@@ -55,7 +55,13 @@ public class DB_Movie {
 		stmt.execute(sql);
 	}
 	
-	
+	public int countMovie() throws SQLException{
+		String find="SELECT count(movie_id) From movie ";
+		ResultSet rs = stmt.executeQuery(find);
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+		return Integer.valueOf(rs.getObject(1).toString());
+	}
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
 		String find="SELECT * From movie natural join manufacture natural join company natural join genres natural join direct ";
