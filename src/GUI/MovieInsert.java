@@ -47,6 +47,7 @@ public class MovieInsert extends JFrame implements ActionListener{
 		this.DB=DB;
 		initialize();
 		setData();
+		tfadd.setEditable(false);
 		
 	}
 	void initialize(){
@@ -190,7 +191,7 @@ public class MovieInsert extends JFrame implements ActionListener{
 				director.addItem(i.getName());
 		}
 	}
-	public void getData(ArrayList<Movie> movieArray) throws SQLException{
+	public void getData(ArrayList<Movie> movieArray) throws Exception{
 		boolean a=false;
 		for(Movie i:movieArray){
 			if(i.getTitle().equals(tfName.getText())){
@@ -241,7 +242,6 @@ public class MovieInsert extends JFrame implements ActionListener{
 		case"確定":
 			try {
 				ArrayList<Movie> movieArray=DB.getMovieDB().searchMovie("","所有類型","所有年代","所有演員");
-				
 				
 				getData(movieArray);
 				this.dispose();

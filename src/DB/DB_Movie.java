@@ -66,16 +66,28 @@ public class DB_Movie {
 		stmt.execute(sql);
 	}
 	//natural join manufacture natural join company
-	public int countMovie() throws SQLException{
-		String find="SELECT count(movie_id) From movie ";
-		ResultSet rs = stmt.executeQuery(find);
+	public int countMovie() throws Exception{
+		String find1="SELECT count(*) From movie  ";
+		ResultSet rs = stmt.executeQuery(find1);
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
-		return Integer.valueOf(rs.getObject(1).toString());
+		//"SELECT * From movie  natural join genres "
+		int count=0;
+		while(rs.next()){
+			for(int i=1; i<=cnum; i++){
+				switch(rm.getColumnName(i)){
+				case"count(*)":
+					count=Integer.valueOf(rs.getObject(i).toString());
+					
+				}
+			}
+		}
+		
+		return count;
 	}
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
-		String find="SELECT * From movie  natural join genres ";
+		String find="SELECT * From movie  natural join genres  ";
 		ArrayList<String> where=new ArrayList<String>();
 		ArrayList<String> from=new ArrayList<String>();
 		if(!name.equals("")){
