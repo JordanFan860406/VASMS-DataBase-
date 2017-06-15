@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
@@ -160,6 +162,11 @@ public class MovieModify extends JFrame implements ActionListener{
 		tfgen.setBounds(130, 510, 100,50);
 		tfgen.setFont(new Font("新細明體",Font.PLAIN ,24));
 		this.add(tfgen);
+		
+		JList jl=new JList();
+		JScrollPane scrollPane=new JScrollPane(jl);
+		scrollPane.setBounds(250,480,200,200);
+		 this.add(scrollPane);
 		
 		jbEdit=new JButton();
 		jbEdit.setBounds(10, 600,200, 70);

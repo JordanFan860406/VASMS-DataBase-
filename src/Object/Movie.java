@@ -6,7 +6,7 @@ public class Movie {
 	String title;
 	String ID;
 	int charge;
-	ArrayList<Character> actArray=new ArrayList<Character>();
+	ArrayList<Character1> actArray=new ArrayList<Character1>();
 	Company company;
 	Direct direct;
 	time publishTime;
@@ -36,6 +36,10 @@ public class Movie {
 	public void setDirect(Direct direct){
 		this.direct=direct;
 	}
+	public void setCharacter(Character1 Character){
+		actArray.add(Character);
+	}
+	
 	
 	public String getID(){
 		return ID;
@@ -63,5 +67,8 @@ public class Movie {
 	}
 	public time getdirectBir(){
 		return direct.birthday;
+	}
+	public ArrayList<Character1> getCharacter(){
+		return actArray;
 	}
 }

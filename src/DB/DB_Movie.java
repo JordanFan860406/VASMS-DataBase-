@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Object.Actor;
+import Object.Character1;
 import Object.Company;
 import Object.Direct;
 import Object.Movie;
@@ -20,6 +21,7 @@ public class DB_Movie {
 		this.DB=DB;
 		this.stmt=DB.stmt;
 	}
+	
 	
 	public void delete(Movie movie) throws SQLException{
 		String sql = "DELETE FROM movie where movie_id='"+movie.getID()+"'";
@@ -53,40 +55,7 @@ public class DB_Movie {
 		stmt.execute(sql);
 	}
 	
-	/*public  ArrayList<Movie> searchMovieNumber() throws SQLException{
-		ArrayList<Movie> movieArray=new ArrayList<Movie>();
-		ResultSet rs = stmt.executeQuery("SELECT * From movie");
-		ResultSetMetaData rm = rs.getMetaData();
-		int cnum = rm.getColumnCount();
-		int ans= Integer.parseInt(rs.getObject(0).toString());;
-		while(rs.next()){
-			Movie movie=new Movie();
-			Company com=new Company();
-			
-			for(int i=1; i<=cnum; i++){
-				switch(rm.getColumnName(i)){
-				case"movie_id":
-					movie.setID(rs.getObject(i).toString());
-					break;
-				case"title":
-					movie.setTitle(rs.getObject(i).toString());
-					break;
-				case"release_date":
-					String[] str = rs.getObject(i).toString().split("-");
-					movie.setTime(new time(Integer.valueOf(str[0]),Integer.valueOf(str[1]),Integer.valueOf(str[2])));
-					break;
-				case"per_charge":
-					movie.setcharge(Integer.valueOf(rs.getObject(i).toString()));
-					break;
-				}
-			
-			}
-			movie.setCompany(com);
-			movieArray.add(movie);
-		}
-		
-		return movieArray;
-	}*/
+	
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
 		String find="SELECT * From movie natural join manufacture natural join company natural join genres natural join direct ";
@@ -169,7 +138,20 @@ public class DB_Movie {
 		}
 		
 		return movieArray;
-		
+	}
+	public Movie searchAct(Movie movie) throws SQLException{
+		String find="SELECT actor_name,role From act natural join actor where movie_id='"+movie.getID()+"'";
+		ResultSet rs = stmt.executeQuery(find);
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+		while(rs.next()){
+			Actor actor=new Actor();
+			actor.setName(rs.getObject(1).toString());
+			Character1 Character=new Character1(rs.getObject(2).toString(),actor);
+			movie.setCharacter(Character);
+			
+		}
+		return movie;
 	}
 	
 	
