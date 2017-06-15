@@ -1,8 +1,8 @@
 package Object;
 
 public class Company {
-	String name;
-	String adress;
+	String name="";
+	String adress="";
 	
 	public Company(){
 		

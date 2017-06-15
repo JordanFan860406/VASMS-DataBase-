@@ -34,13 +34,24 @@ public class DB_Movie {
 		stmt.execute(sql);
 	}
 	
-	public void updateMovie(Movie movie) throws SQLException{
+	public void updateMovie(Movie movie,boolean d,boolean c) throws SQLException{
 		String per= String.valueOf(movie.get());
 		String time=String.valueOf(movie.getTime().getYear())+"-"+String.valueOf(movie.getTime().getMonth())+"-"+String.valueOf(movie.getTime().getDay());
 		stmt.executeUpdate("UPDATE genres SET movie_genres = '"+movie.getgeners()+"' WHERE movie_id='"+movie.getID()+"';");
-		stmt.executeUpdate("UPDATE manufacture SET company_name='"+movie.getCompanyName()+"' WHERE movie_id='"+movie.getID()+"';");
+		if(c){
+			stmt.executeUpdate("UPDATE manufacture SET company_name='"+movie.getCompanyName()+"' WHERE movie_id='"+movie.getID()+"';");
+		}
+		else{
+			stmt.execute("INSERT INTO manufacture (movie_id, company_name) VALUES ('"+movie.getID()+"', '"+movie.getCompanyName()+"')");
+		}
+		if(d){
+			stmt.executeUpdate("UPDATE direct SET director_name = '"+movie.getdirectName()+"' WHERE movie_id='"+movie.getID()+"';");
+		}
+		else{
+			stmt.execute("INSERT INTO direct (movie_id, director_name) VALUES ('"+movie.getID()+"', '"+movie.getdirectName()+"')");
+		}
 		stmt.executeUpdate("UPDATE movie SET title = '"+movie.getTitle()+"',per_charge='"+per+"',release_date='"+time+"' WHERE movie_id='"+movie.getID()+"';");
-		stmt.executeUpdate("UPDATE direct SET director_name = '"+movie.getdirectName()+"' WHERE movie_id='"+movie.getID()+"';");
+		
 	}
 	public void insertMovie(Movie movie) throws SQLException{
 		String time=String.valueOf(movie.getTime().getYear())+"-"+String.valueOf(movie.getTime().getMonth())+"-"+String.valueOf(movie.getTime().getDay());
@@ -54,7 +65,7 @@ public class DB_Movie {
 		sql = "INSERT INTO direct (movie_id, director_name) VALUES ('"+movie.getID()+"', '"+movie.getdirectName()+"')";
 		stmt.execute(sql);
 	}
-	
+	//natural join manufacture natural join company
 	public int countMovie() throws SQLException{
 		String find="SELECT count(movie_id) From movie ";
 		ResultSet rs = stmt.executeQuery(find);
@@ -64,7 +75,7 @@ public class DB_Movie {
 	}
 	public ArrayList<Movie> searchMovie(String name,String type,String year,String actor) throws Exception{
 		ArrayList<Movie> movieArray=new ArrayList<Movie>();
-		String find="SELECT * From movie natural join manufacture natural join company natural join genres natural join direct ";
+		String find="SELECT * From movie  natural join genres ";
 		ArrayList<String> where=new ArrayList<String>();
 		ArrayList<String> from=new ArrayList<String>();
 		if(!name.equals("")){
@@ -101,16 +112,9 @@ public class DB_Movie {
 
 		while(rs.next()){
 			Movie movie=new Movie();
-			Company com=new Company();
 			Direct director=new Direct();
 			for(int i=1; i<=cnum; i++){
 				switch(rm.getColumnName(i)){
-				case"company_name":
-					com.setName(rs.getObject(i).toString());
-					break;
-				case"address":
-					com.setAdress(rs.getObject(i).toString());
-					break;
 				case"movie_id":
 					movie.setID(rs.getObject(i).toString());
 					break;
@@ -127,23 +131,66 @@ public class DB_Movie {
 				case"movie_genres":
 					movie.setGeners(rs.getObject(i).toString());
 					break;
-				case"director_name":
-					director.setName(rs.getObject(i).toString());
-					break;
-				case"director_birthday":
-					String[] str1 = rs.getObject(i).toString().split("-");
-					director.setBirth(new time(Integer.valueOf(str1[0]),Integer.valueOf(str1[1]),Integer.valueOf(str1[2])));
-					break;
-				
 				}
 			
 			}
 			movie.setDirect(director);
-			movie.setCompany(com);
 			movieArray.add(searchAct(movie));
 		}
-		
-		return movieArray;
+		find="SELECT movie_id,company_name,address From manufacture natural join company ";
+		rs = stmt.executeQuery(find);
+		rm = rs.getMetaData();
+		cnum = rm.getColumnCount();
+		ArrayList<Movie> movieArray1=new ArrayList<Movie>();
+		while(rs.next()){
+			Company com=new Company();
+			for(Movie i:movieArray){
+				if(i.getID().equals(rs.getObject(1).toString())){
+						com.setName(rs.getObject(2).toString());
+						com.setAdress(rs.getObject(3).toString());
+						i.setCompany(com);
+						movieArray1.add(i);
+						movieArray.remove(i);
+						//System.out.println(i.getTitle()+":"+rs.getObject(2).toString());
+						break;
+				}
+			
+			}
+			
+		}
+		for(Movie i:movieArray){
+			Company com=new Company();
+			i.setCompany(com);
+			movieArray1.add(i);
+		}
+		return searchDirect(movieArray1);
+	}
+	public ArrayList<Movie> searchDirect(ArrayList<Movie> movieArray) throws SQLException{
+		String find="SELECT movie_id,director_name From direct ";
+		ResultSet rs = stmt.executeQuery(find);
+		ResultSetMetaData rm = rs.getMetaData();
+		int cnum = rm.getColumnCount();
+		ArrayList<Movie> movieArray1=new ArrayList<Movie>();
+		while(rs.next()){
+			Direct Direct=new Direct();
+			for(Movie i:movieArray){
+				if(i.getID().equals(rs.getObject(1).toString())){
+					Direct.setName(rs.getObject(2).toString());
+						i.setDirect(Direct);
+						movieArray1.add(i);
+						movieArray.remove(i);
+						break;
+				}
+			
+			}
+			
+		}
+		for(Movie i:movieArray){
+			Direct direct=new Direct();
+			i.setDirect(direct);;
+			movieArray1.add(i);
+		}
+		return movieArray1;
 	}
 	public Movie searchAct(Movie movie) throws SQLException{
 		String find="SELECT actor_name,role From act natural join actor where movie_id='"+movie.getID()+"'";

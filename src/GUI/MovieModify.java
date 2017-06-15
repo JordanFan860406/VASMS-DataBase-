@@ -242,6 +242,14 @@ public class MovieModify extends JFrame implements ActionListener{
 		jl.setListData(ListVector);
 	}
 	public void modifyData() throws SQLException{
+		boolean company=true;
+		boolean direct=true;
+		if(movie.getdirectName().equals("")){
+			direct=false;
+		}
+		if(movie.getCompanyName().equals("")){
+			company=false;
+		}
 		movie.setTitle(tfName.getText());
 		movie.setCompany(new Company(com.getSelectedItem().toString(),tfadd.getText()));
 		movie.setTime(new time(Integer.parseInt(tfyear.getText()),Integer.parseInt(tfmonth.getText()),Integer.parseInt(tfday.getText())));
@@ -253,7 +261,7 @@ public class MovieModify extends JFrame implements ActionListener{
 				break;
 			}
 		}
-		DB.getMovieDB().updateMovie(movie);
+		DB.getMovieDB().updateMovie(movie,direct,company);
 	}
 	
 	@Override

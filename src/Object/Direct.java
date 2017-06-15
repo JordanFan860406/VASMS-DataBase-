@@ -3,7 +3,7 @@ package Object;
 
 
 public class Direct {
-	String name;
+	String name="";
 	time birthday;
 	String sex;
 	public Direct(){

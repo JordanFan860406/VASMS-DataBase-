@@ -52,7 +52,7 @@ public class Movie {
 		return title;
 	}
 	public String getCompanyName(){
-		return company.name;
+			return company.name;		
 	}
 	public String getCompanyAddress(){
 		return company.adress;
