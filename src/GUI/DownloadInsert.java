@@ -40,6 +40,8 @@ public class DownloadInsert extends JFrame implements ActionListener {
 		this.setBounds(100,100,500,500);
 		this.setLayout(null);
 		this.setVisible(true);
+		this.setResizable(false);
+		
 		lbName.setFont(new Font("新細明體",Font.PLAIN ,24));
 		lbName.setBounds(10, 10,150,50);
 		this.add(lbName);
@@ -94,9 +96,15 @@ public class DownloadInsert extends JFrame implements ActionListener {
 		
 		jbInsert = new JButton("新增");
 		jbInsert.setBounds(10, 310, 200, 70);
-		jbInsert.setFont(new Font("新細明體",Font.PLAIN ,24));
+		jbInsert.setFont(new Font("新細明體",Font.PLAIN ,28));
 		this.add(jbInsert);
 		jbInsert.addActionListener(this);
+		
+		jbCancel = new JButton("取消");
+		jbCancel.setBounds(280, 310, 200, 70);
+		jbCancel.setFont(new Font("新細明體",Font.PLAIN ,28));
+		this.add(jbCancel);
+		jbCancel.addActionListener(this);
 	}
 	
 	public void setData() throws Exception{
@@ -117,13 +125,21 @@ public class DownloadInsert extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		try {
-			setData();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		switch(e.getActionCommand()){
+			case"新增":
+				try {
+					setData();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				this.dispose();
+				break;
+			case"取消":
+				this.dispose();
+				break;
 		}
 	}
 

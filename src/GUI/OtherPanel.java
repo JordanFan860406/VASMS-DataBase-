@@ -32,6 +32,7 @@ public class OtherPanel extends JPanel {
 	void initialize(){
 		this.setSize(1000, 800);
 		this.setLayout(null);
+		this.setBackground(Color.green);
 		
 		comPanel = new JPanel();
 		comPanel.setBounds(20, 20, 430, 350);

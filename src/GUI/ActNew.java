@@ -38,6 +38,7 @@ public class ActNew extends JFrame implements ActionListener{
 		this.setBounds(100,100,500,700);
 		this.setLayout(null);
 		this.setVisible(true);
+		this.setResizable(false);
 		
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
@@ -90,6 +91,12 @@ public class ActNew extends JFrame implements ActionListener{
 		for(Movie i : DB.getMovieDB().searchMovie("", "所有類型", "所有年代", "所有演員")){
 			jbMovie.addItem(i.getTitle());
 		}
+	}
+	
+	public void insert() throws Exception{
+		String act = jbActor.getSelectedItem().toString();
+		String movie = jbMovie.getSelectedItem().toString();
+		String role = tfRole.getText();
 	}
 	
 	@Override

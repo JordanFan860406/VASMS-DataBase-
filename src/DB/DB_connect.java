@@ -30,7 +30,7 @@ public class DB_connect {
 	}
 	
 	void connect()throws Exception{
-		String CONNECTION = "jdbc:mariadb://140.127.74.210:3306/410477025";
+		String CONNECTION = "jdbc:mariadb://140.127.74.226:3306/410477025";
 		Class.forName("org.mariadb.jdbc.Driver");
 		Properties p = new Properties();
 	    p.put("user","410477025");

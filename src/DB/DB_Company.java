@@ -18,6 +18,22 @@ public class DB_Company {
 		this.DB=DB;
 		this.stmt=DB.stmt;
 	}
+	
+	public void insertCompany(Company com)throws Exception{
+		String company = com.getName();
+		String address = com.getAddress();
+		String sql = "INSERT INTO company (company_name, address) VALUES ('"+company+"', '"+address+"'"+")";
+		stmt.execute(sql);
+	}
+	
+	public void deleteCompany(Company com)throws Exception{
+		String company = com.getName();
+		String sql = "DELETE FROM company where company_name='"+company+"'";
+		stmt.execute(sql);
+		sql = "DELETE FROM manufacture where company_name='"+company+"'";
+		stmt.execute(sql);
+	}
+	
 	public ArrayList<Company>searchAllCom() throws SQLException{
 		ArrayList<Company> companyArray=new ArrayList<Company>();
 		ResultSet rs = stmt.executeQuery("SELECT * From company");

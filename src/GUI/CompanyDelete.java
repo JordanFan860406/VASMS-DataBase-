@@ -32,7 +32,7 @@ public class CompanyDelete extends JFrame implements ActionListener{
 		this.setBounds(100,100,500,500);
 		this.setLayout(null);
 		this.setVisible(true);
-		
+		this.setResizable(false);
 
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
@@ -61,6 +61,12 @@ public class CompanyDelete extends JFrame implements ActionListener{
 		
 	}
 	
+	public void delete() throws Exception{
+		String comName = jbCom.getSelectedItem().toString();
+		Company com = new Company(comName, null);
+		DB.getCompanyDB().deleteCompany(com);
+	}
+	
 	public void setData() throws Exception{
 		for(Company i : DB.getCompanyDB().searchAllCom()){
 			jbCom.addItem(i.getName());
@@ -73,6 +79,12 @@ public class CompanyDelete extends JFrame implements ActionListener{
 		switch(e.getActionCommand()){
 			
 			case"刪除後離開":
+			try {
+				delete();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				this.dispose();
 				break;
 			case"取消":

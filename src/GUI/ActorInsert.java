@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Actor;
 
 public class ActorInsert extends JFrame implements ActionListener {
 	JLabel lbName = new JLabel("演員名字:");
@@ -40,6 +41,7 @@ public class ActorInsert extends JFrame implements ActionListener {
 		this.setBounds(100,100,500,700);
 		this.setLayout(null);
 		this.setVisible(true);
+		this.setResizable(false);
 		
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
@@ -125,11 +127,29 @@ public class ActorInsert extends JFrame implements ActionListener {
 		}
 	}
 	
+	public void insert() throws Exception{
+		String actName = tfName.getText();
+		String actBirth = jbYear.getSelectedItem().toString() + "-" + jbMonth.getSelectedItem().toString() + "-" + jbDay.getSelectedItem().toString();
+		String actSex = jbSex.getSelectedItem().toString();
+		String sex = null ;
+		if(actSex.equals("男"))
+			sex = "boy";
+		else if(actSex.equals("女"))
+			sex = "girl";
+		DB.getActorDB().insertActor(actName, actBirth, sex);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			case"儲存後離開":
+			try {
+				insert();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				this.dispose();
 				break;
 			case"取消":

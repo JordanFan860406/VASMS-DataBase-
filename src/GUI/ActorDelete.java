@@ -32,7 +32,7 @@ public class ActorDelete extends JFrame implements ActionListener {
 		this.setBounds(100,100,500,500);
 		this.setLayout(null);
 		this.setVisible(true);
-		
+		this.setResizable(false);
 
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
@@ -67,12 +67,23 @@ public class ActorDelete extends JFrame implements ActionListener {
 		}
 	}
 	
+	public void delete() throws Exception{
+		String actName = jbAct.getSelectedItem().toString();
+		DB.getActorDB().deleteActor(actName);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			
 			case"刪除後離開":
+				try {
+					delete();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				this.dispose();
 				break;
 			case"取消":

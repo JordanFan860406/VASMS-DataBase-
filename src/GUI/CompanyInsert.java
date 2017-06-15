@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Company;
 
 public class CompanyInsert extends JFrame implements ActionListener{
 	
@@ -33,6 +34,7 @@ public class CompanyInsert extends JFrame implements ActionListener{
 		this.setBounds(100,100,500,500);
 		this.setLayout(null);
 		this.setVisible(true);
+		this.setResizable(false);
 		
 		lbFrame.setFont(new Font("新細明體",Font.PLAIN ,32));
 		lbFrame.setBounds(135, 10,200,50);
@@ -70,12 +72,25 @@ public class CompanyInsert extends JFrame implements ActionListener{
 		
 	}
 	
+	public void insert() throws Exception{
+		String comName = tfCom.getText();
+		String comAddress = tfAddress.getText();
+		Company com = new Company(comName, comAddress);
+		DB.getCompanyDB().insertCompany(com);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 		
 			case"儲存後離開":
+			try {
+				insert();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				this.dispose();
 				break;
 			case"取消":

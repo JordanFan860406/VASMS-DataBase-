@@ -17,6 +17,18 @@ public class DB_Actor {
 		this.stmt=DB.stmt;
 	}
 	
+	public void insertActor(String name, String birth, String sex) throws Exception{
+		String sql = "INSERT INTO actor (actor_name, actor_birthday, actor_sex) VALUES ('"+name+"', '"+birth+"', "+"'"+sex+"'"+")";
+		stmt.execute(sql);
+	}
+	
+	public void deleteActor(String name)throws Exception{
+		String sql = "DELETE FROM actor where actor_name='"+name+"'";
+		stmt.execute(sql);
+		sql = "DELETE FROM act where actor_name='"+name+"'";
+		stmt.execute(sql);
+	}
+	
 	public ArrayList<Actor> searchActor() throws SQLException{
 		ArrayList<Actor> actorArray=new ArrayList<Actor>();
 		ResultSet rs = stmt.executeQuery("SELECT * From actor");
