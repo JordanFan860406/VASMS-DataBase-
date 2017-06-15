@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -63,13 +64,21 @@ public class DirectorDelete extends JFrame implements ActionListener{
 			jbDir.addItem(i.getName());
 		}
 	}
-	
+	public void delete() throws SQLException{
+		for(Direct i : DB.getDictorDB().searchAllDirector()){
+			if(i.getName().equals(jbDir.getSelectedItem().toString())){
+				DB.getDictorDB().delete(i);
+			}
+		}
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 		
 		case"刪除後離開":
+			
 			this.dispose();
 			break;
 		case"取消":

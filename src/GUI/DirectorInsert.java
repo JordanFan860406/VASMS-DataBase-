@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import DB.DB_connect;
+import Object.Direct;
+import Object.time;
 
 public class DirectorInsert extends JFrame implements ActionListener{
 	JLabel lbName = new JLabel("導演名字:");
@@ -22,10 +25,10 @@ public class DirectorInsert extends JFrame implements ActionListener{
 	JComboBox jbMonth;
 	JComboBox jbDay;
 	JComboBox jbSex;
-	String [] year ={"年份"};
-	String [] month = {"月份"};
-	String [] day ={"日"};
-	String [] sex ={"性別", "男", "女"};
+	String [] year ={};
+	String [] month = {};
+	String [] day ={};
+	String [] sex ={ "boy", "girl"};
 	JButton btnInsert;
 	JButton btnCancel;
 	DB_connect DB;
@@ -124,12 +127,33 @@ public class DirectorInsert extends JFrame implements ActionListener{
 			jbDay.addItem(day);
 		}
 	}
-	
+	public void insert() throws SQLException{
+		Direct direct=new Direct();
+		direct.setName(tfName.getText());
+		
+		int year=0;
+		year=Integer.parseInt(jbYear.getSelectedItem().toString());
+		int month=0;
+		month=Integer.parseInt(jbMonth.getSelectedItem().toString());
+		int day=0;
+		day=Integer.parseInt(jbDay.getSelectedItem().toString());
+		
+		direct.setBirth(new time(year,month,day));
+		direct.setSex(jbSex.getSelectedItem().toString());
+		DB.getDictorDB().insertDirector(direct);
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			case"儲存後離開":
+			try {
+				insert();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				this.dispose();
 				break;
 			case"取消":
