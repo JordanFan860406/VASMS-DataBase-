@@ -33,6 +33,7 @@ public class ActorInsert extends JFrame implements ActionListener {
 	public ActorInsert(DB_connect DB){
 		this.DB = DB;
 		initialize();
+		setData();
 	}
 	
 	void initialize(){
