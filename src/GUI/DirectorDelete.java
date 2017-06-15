@@ -78,7 +78,12 @@ public class DirectorDelete extends JFrame implements ActionListener{
 		switch(e.getActionCommand()){
 		
 		case"刪除後離開":
-			
+			try {
+				delete();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			this.dispose();
 			break;
 		case"取消":
