@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,11 +22,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import DB.DB_connect;
+import Object.Movie;
 
 public class DownloadPanel extends JPanel {
 	private JComboBox type;
 	private JComboBox Year;
-	private JComboBox month;
+	private JRadioButton month;
 	private JComboBox movieType;
 	private JLabel lbYear;
 	JList dwName;
@@ -41,11 +43,12 @@ public class DownloadPanel extends JPanel {
 	String getMvName;
 	String [] b={"所有年份", "2005", "2006", "2007", "2008", "2009", "2010", "2011",
 			"2012", "2013", "2014", "2015", "2005~2015", "2016", "2017"};
-	String [] c={"所有類型","驚悚","動作","愛情"};
+	String [] c={"所有類型"};
 	String [] d={"所有月份", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
-	public DownloadPanel(DB_connect DB){
+	public DownloadPanel(DB_connect DB) throws Exception{
 		initialize();
 		this.DB = DB;
+		setDate();
 	}
 	
 	void initialize(){
@@ -86,16 +89,17 @@ public class DownloadPanel extends JPanel {
     	movieType.setVisible(true);
 		searchPanel.add(movieType);
 		
-		JLabel lbMonth=new JLabel("月份");
+		JLabel lbMonth=new JLabel("");
 		lbMonth.setFont(new Font("新細明體",Font.PLAIN ,20));
 		lbMonth.setBounds(5,100,120,30);
 		searchPanel.add(lbMonth);
 		
-		month = new JComboBox(d);
+		month = new JRadioButton("按月份排出下載量");
+		month.setBounds(140, 100, 200, 30);
+		month.setBackground(Color.white);
 		month.setFont(new Font("新細明體",Font.PLAIN ,20));
-		month.setBounds(125,100,150,30);
-		month.setVisible(true);
 		searchPanel.add(month);
+		
 		
 		JButton btnSearch= new JButton("搜尋");
 		btnSearch.setBounds(480,140,100, 50);
@@ -109,8 +113,8 @@ public class DownloadPanel extends JPanel {
 					reList.removeAll();
 					year = Year.getSelectedItem().toString();
 					mvType = movieType.getSelectedItem().toString();
-					getMonth = month.getSelectedItem().toString();
-					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, getMonth, mvType);
+					boolean check = month.isSelected();
+					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, check, mvType);
 					reList.setListData(tmpList.toArray());
 					dwName.removeAll();
 				} catch (Exception e1) {
@@ -152,11 +156,12 @@ public class DownloadPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String[]arr = dwName.getSelectedValue().toString().split(" : ");
-				System.out.println(getMvName);
 				String[]arr2 = arr[1].split("  ");
+				
+				System.out.println(arr2[0] + arr[2]);
 				try {
-					ArrayList<String>seId = DB.getDownloadDB().searchID(arr2[0], getMvName);
-					DB.getDownloadDB().deleteDownLoad(seId.get(0), seId.get(1), arr[2]);
+					ArrayList<String>seId = DB.getDownloadDB().searchID(arr2[0], arr[2]);
+					DB.getDownloadDB().deleteDownLoad(seId.get(0), arr[2]);
 					dwName.repaint();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -196,15 +201,12 @@ public class DownloadPanel extends JPanel {
 					int index = reList.getSelectedIndex();
 					try {
 						dwName.removeAll();
-						String temp = reList.getSelectedValue().toString();
-						String []tempArr = temp.split(":");
-						String []reArr = tempArr[1].split(" ");
-						mvName = reArr[1];
-						getMvName = mvName;
-						ArrayList<String> rsList = DB.getDownloadDB().downloadName(mvName);
-//						for(int i=0 ; i<rsList.size() ; i++){
-						dwName.setListData(rsList.toArray());
-//						}
+						String[]temp = reList.getSelectedValue().toString().split(" ");
+						String str1 = temp[2];
+						String str2 = temp[6];
+						boolean check = month.isSelected();
+						ArrayList<String> rsList = DB.getDownloadDB().downloadName(str1, str2, check);
+						dwName.setListData(rsList.toArray());		
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -226,7 +228,13 @@ public class DownloadPanel extends JPanel {
 		dwName.setBounds(630, 240, 350, 550);
 		this.add(dwName);
 	}
-	
+	public void setDate() throws Exception{
+		ArrayList<String> genresArray=DB.getGenresDB().searchGenres();
+		for(String i:genresArray){
+			movieType.addItem(i);
+			System.out.print(i);
+		}
+	}
 	
 
 }

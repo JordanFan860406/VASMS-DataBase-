@@ -109,7 +109,13 @@ public class MainFrame implements ActionListener{
 			break;
 			
 		case"下載":
-			JPanel  JPanel3= new DownloadPanel(DB);
+			JPanel JPanel3 = null;
+			try {
+				JPanel3 = new DownloadPanel(DB);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//JPanel3.setBackground(Color.lightGray);
 			mainPanel.removeAll();
 			mainPanel.add(JPanel3);

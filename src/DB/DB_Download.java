@@ -10,55 +10,93 @@ public class DB_Download {
 		this.stmt = DB.stmt;
 	}
 	
-	public ArrayList<String> searchDownload(String year, String month, String type) throws Exception{
-		//stmt.executeUpdate("INSERT INTO member VALUES ('mem00020', 'Joker Fan', '1997-8-9', 'boy')");
-		String [] arr = {"","電影名稱","月份", "下載次數"};
+	public ArrayList<String> searchDownload(String year, boolean month, String type) throws Exception{
+		String [] arr = {"","類型", "月份", "下載次數"};
+		String [] arr2 = {"", "電影名稱", "年份", "下載次數"};
+		String [] check = null;
 		ArrayList<String> resultList = new ArrayList<String>();
 		ArrayList<String> where = new ArrayList<String>();
-		String find = "Select title, month(download_date) ,count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
-		if(!year.equals("所有年份") ){
-			where.add("year(download_date)='" +  year + "' ");
-		}
-		if(!month.equals("所有月份")){
-			where.add("month(download_date)='" + month + "' ");
-		}
-		if(!type.equals("所有類型")){
-			where.add("movie_genres='" + type + "' ");
-		}
-		if(where.size()>0){
-			find += "where ";
-		}
-		for(int i=0;i<where.size();i++){
-			find+=where.get(i);
-			if(where.size()!=i+1){
-				find+="and ";
+		String find = "Select title, year(download_date), count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";
+		String findcheck = null;
+		String findMon = "Select movie_genres, month(download_date) ,count(buy.movie_id) as downloadtime From movie natural join buy natural join genres ";		
+		if( month== true){
+			
+			if(!year.equals("所有年份") ){
+				where.add("year(download_date)='" +  year + "' ");
 			}
+	
+			if(!type.equals("所有類型")){
+				where.add("movie_genres='" + type + "' ");
+			}
+			if(where.size()>0){
+				findMon += "where ";
+			}
+			for(int i=0;i<where.size();i++){
+				findMon+=where.get(i);
+				if(where.size()!=i+1){
+					findMon+="and ";
+				}
+			}
+			findMon+="group by movie_genres, month(download_date) order by downloadtime desc";
+			findcheck = findMon;
+			check = arr;
 		}
-		find +="group by title order by downloadtime desc";
-		ResultSet rs = stmt.executeQuery(find);
-		ResultSetMetaData rm = rs.getMetaData();
+		else if(month == false){
+			if(!year.equals("所有年份") ){
+				where.add("year(download_date)='" +  year + "' ");
+			}
+	
+			if(!type.equals("所有類型")){
+				where.add("movie_genres='" + type + "' ");
+			}
+			if(where.size()>0){
+				find += "where ";
+			}
+			for(int i=0;i<where.size();i++){
+				find+=where.get(i);
+				if(where.size()!=i+1){
+					find+="and ";
+				}
+			}
+			find+="group by movie_genres, month(download_date) order by downloadtime desc";
+			findcheck = find;
+			check = arr2;
+		}
+		
+			ResultSet rs = stmt.executeQuery(findcheck);
+			ResultSetMetaData rm = rs.getMetaData();
+	
+			int cnum = rm.getColumnCount();
+	
+			while(rs.next())
+			{
+				String resultS = "";
+			for(int i=1; i<=cnum; i++)
+			{	
+				resultS += check[i]+" : "+rs.getObject(i) + "  ";
+	//			System.out.print(resultS);
+			}
+			resultList.add(resultS);
+	//		System.out.println("");
+			}
+			return resultList;
+			
+		}
 
-		int cnum = rm.getColumnCount();
-
-		while(rs.next())
-		{
-			String resultS = "";
-		for(int i=1; i<=cnum; i++)
-		{	
-			resultS += arr[i]+" : "+rs.getObject(i) + "  ";
-//			System.out.print(resultS);
-		}
-		resultList.add(resultS);
-//		System.out.println("");
-		}
-		return resultList;
-		}
-
-	public ArrayList <String> downloadName(String movieTitle) throws Exception{
+	public ArrayList <String> downloadName(String movieTitle, String year, boolean check) throws Exception{
 		ArrayList <String> resultArr = new ArrayList<String>();
 		String []items = {"","會員姓名", "下載日期"};
-		String find = "Select member_name, download_date From buy natural join movie natural join member where title='"+movieTitle+"'";
-		ResultSet rs = stmt.executeQuery(find);
+		String find = "Select member_name, download_date From buy natural join movie natural join member natural join genres where movie_genres='"+movieTitle+"' and month(download_date)='" + year + "'";
+		String findln = "Select member_name, download_date From buy natural join movie natural join member where title='"+movieTitle+"' and year(download_date)='" + year + "'";
+		String findCheck = null;
+		if(check == true){
+			findCheck = find;
+		}
+		else if(check == false){
+			findCheck = findln;
+		}
+		
+		ResultSet rs = stmt.executeQuery(findCheck);
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
 
@@ -79,8 +117,8 @@ public class DB_Download {
 	public ArrayList<String> searchID(String name, String mvTitle) throws Exception{
 		ArrayList<String>conList = new ArrayList<String>();
 		String findId = "Select member_id From member where member_name='"+ name +"'";
-		String findMv = "Select movie_id From movie where title='"+ mvTitle +"'";
-		String[]temp = {findId, findMv};
+//		String findMv = "Select movie_id From movie ntural join buy where download_date='"+ mvTitle +"'";
+		String[]temp = {findId};
 		for(int i=0 ; i<temp.length ; i++){
 			ResultSet rs = stmt.executeQuery(temp[i]);
 			ResultSetMetaData rm = rs.getMetaData();
@@ -103,8 +141,8 @@ public class DB_Download {
 		stmt.executeUpdate(sql);
 	}
 	
-	public void deleteDownLoad(String memId, String mvId, String Date)throws Exception{
-		String sql = "DELETE FROM buy where member_id='" + memId +"' and movie_id='"+ mvId +"' and download_date='" + Date +"'";
+	public void deleteDownLoad(String memId, String Date)throws Exception{
+		String sql = "DELETE FROM buy where member_id='" + memId +"' and download_date='" + Date +"'";
 		stmt.executeQuery(sql);
 	}
 }
