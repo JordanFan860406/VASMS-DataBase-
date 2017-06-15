@@ -38,7 +38,8 @@ public class MemberModify extends JFrame implements ActionListener{
 	private JTextField tfmonth;
 	private JTextField tfday;
 	private JTextField tfsex;
-
+	private JTextField tfActor;
+	private JTextField tfActress;
 	JButton jbEnter;
 	JButton jbEdit;
 	JButton jbClose;
@@ -72,10 +73,18 @@ public class MemberModify extends JFrame implements ActionListener{
 		this.add(lb1);
 		
 		tfsex=new JTextField();
-		tfsex.setBounds(130, 110, 100,50);
+		tfsex.setBounds(130, 110, 60,50);
 		tfsex.setFont(new Font("新細明體",Font.PLAIN ,20));
 		this.add(tfsex);
-		 
+		//最愛男演員
+		JLabel lb10 = new JLabel("最愛男演員:");
+		lb10.setFont(new Font("新細明體",Font.PLAIN ,24));
+		lb10.setBounds(210,110,200,50);
+		this.add(lb10);
+		tfActor=new JTextField();
+		tfActor.setBounds(345, 110, 130,50);
+		tfActor.setFont(new Font("新細明體",Font.PLAIN ,20));
+		this.add(tfActor);
 		
 		//已付金額
 		lb2.setFont(new Font("新細明體",Font.PLAIN ,24));
@@ -83,10 +92,19 @@ public class MemberModify extends JFrame implements ActionListener{
 		this.add(lb2);
 		
 		tfpay=new JTextField();
-		tfpay.setBounds(130, 210,100,50);
+		tfpay.setBounds(130, 210,60,50);
 		tfpay.setFont(new Font("新細明體",Font.PLAIN ,20));
 		this.add(tfpay);
+		//最愛女演員
+		JLabel lb11 = new JLabel("最愛女演員:");
+		lb11.setFont(new Font("新細明體",Font.PLAIN ,24));
+		lb11.setBounds(210,210,200,50);
+		this.add(lb11);
 		
+		tfActress=new JTextField();
+		tfActress.setBounds(345, 210, 130,50);
+		tfActress.setFont(new Font("新細明體",Font.PLAIN ,20));
+		this.add(tfActress);
 		//生日
 		lb3.setFont(new Font("新細明體",Font.PLAIN ,24));
 		lb3.setBounds(10, 310,150,50);
@@ -133,6 +151,8 @@ public class MemberModify extends JFrame implements ActionListener{
 	private void setEditMode(Boolean mode){
 		tfName.setEditable(mode);
 		tfpay.setEditable(false);
+		tfActress.setEditable(false);
+		tfActor.setEditable(false);
 		tfyear.setEditable(mode);
 		tfmonth.setEditable(mode);
 		tfday.setEditable(mode);
@@ -154,6 +174,8 @@ public class MemberModify extends JFrame implements ActionListener{
 		tfmonth.setText(String.valueOf(member.getBir().getMonth()));
 		tfday.setText(String.valueOf(member.getBir().getDay()));
 		tfsex.setText(member.getSex());
+		tfActress.setText(member.getActress());
+		tfActor.setText(member.getfavActor());
 	}
 	public void modifyData() throws SQLException{
 		member.setName(tfName.getText());
