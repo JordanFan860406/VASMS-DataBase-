@@ -24,9 +24,7 @@ public class MainFrame implements ActionListener{
 	JButton btnOther = new JButton("其他");
 	JLabel lb = new JLabel("               歡迎使用本系統");
 	DB_connect DB;
-	public static void  main(String [] args) throws Exception{
-		new MainFrame();
-	}
+	
 	
 	
 	
