@@ -176,6 +176,7 @@ public class DownloadPanel extends JPanel {
 				String member = list.get(index).getBuyList().get(in).getMember();
 				String date = list.get(index).getBuyList().get(in).getStrDate();
 				String mvName = list.get(index).getmvName();
+				
 				try {
 					ArrayList<member>mem = DB.getMemberDB().searchAllMember(member);
 					ArrayList<Movie>mv = DB.getMovieDB().searchMovie(mvName, "所有類型", "所有年代", "所有演員");
@@ -198,7 +199,6 @@ public class DownloadPanel extends JPanel {
 						}
 						reList.setListData(conList.toArray());
 					}
-					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
