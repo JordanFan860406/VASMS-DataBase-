@@ -137,13 +137,17 @@ public class DB_Download {
 		return resultArr;
 	}
 	
+	
 	public void insertDownload(String memId, String mvId, String date) throws Exception{
 		String sql = "INSERT INTO buy (member_id, movie_id, download_date) VALUES ('"+memId+"', '"+mvId+"', '"+ date +"')";
 		stmt.executeUpdate(sql);
 	}
 	
-	public void deleteDownLoad(String memId, String Date)throws Exception{
-		String sql = "DELETE FROM buy where member_id='" + memId +"' and download_date='" + Date +"'";
-		stmt.executeQuery(sql);
+	public void deleteDownLoad(String memId, String mvId,String Date)throws Exception{
+		System.out.println(123);
+		System.out.println(memId+" " + mvId + " " +Date);
+		String SQL = "DELETE FROM buy where member_id='" + memId +"' and download_date='" + Date +"' and movie_id='"+mvId+"'";
+		stmt.executeUpdate(SQL);
+		System.out.println("刪除成功");
 	}
 }

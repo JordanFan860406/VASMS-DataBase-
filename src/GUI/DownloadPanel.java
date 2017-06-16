@@ -25,6 +25,7 @@ import DB.DB_connect;
 import Object.Buy;
 import Object.MemberBuy;
 import Object.Movie;
+import Object.member;
 
 public class DownloadPanel extends JPanel {
 	private JComboBox type;
@@ -170,6 +171,38 @@ public class DownloadPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int index = reList.getSelectedIndex();
+				int in = dwName.getSelectedIndex();
+				String member = list.get(index).getBuyList().get(in).getMember();
+				String date = list.get(index).getBuyList().get(in).getStrDate();
+				String mvName = list.get(index).getmvName();
+				try {
+					ArrayList<member>mem = DB.getMemberDB().searchAllMember(member);
+					ArrayList<Movie>mv = DB.getMovieDB().searchMovie(mvName, "所有類型", "所有年代", "所有演員");
+					DB.getDownloadDB().deleteDownLoad(mem.get(0).getID(), mv.get(0).getID(), date);
+					year = Year.getSelectedItem().toString();
+					mvType = movieType.getSelectedItem().toString();
+					if(month.isSelected() == true){
+						list = DB.getDownloadDB().searchDownloadMon(year, mvType);
+						ArrayList<String>conList = new ArrayList<String>();
+						for(int i=0 ; i<list.size() ; i++){
+							conList.add("類型:"+list.get(i).getType()+" "+"月份:"+list.get(i).getMonth()+" "+"下載次數:"+list.get(i).getCount());
+						}
+						reList.setListData(conList.toArray());
+					}
+					else if(month.isSelected()==false){
+						list = DB.getDownloadDB().searchDownloadYear(year, mvType);
+						ArrayList<String>conList = new ArrayList<String>();
+						for(int i=0 ; i<list.size() ; i++){
+							conList.add("電影名稱:"+list.get(i).getmvName()+" "+"年份:"+list.get(i).getYear()+" "+"下載次數:"+list.get(i).getCount());
+						}
+						reList.setListData(conList.toArray());
+					}
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 			
@@ -195,14 +228,13 @@ public class DownloadPanel extends JPanel {
 		reList.setFont(new Font("新細明體",Font.PLAIN ,20));
 		Panel1.setBackground(Color.white);
 		Panel.add(reList);
-		
 		reList.addListSelectionListener(new ListSelectionListener(){
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
 				if(!e.getValueIsAdjusting()){
-					int index = reList.getAnchorSelectionIndex();
+					int index = reList.getSelectedIndex();
 					ArrayList<String>conList = new ArrayList<String>();
 					for(int i=0 ; i<list.get(index).getBuyList().size() ; i++){
 						conList.add("會員名字:"+list.get(index).getBuyList().get(i).getMember()+" "+"下載日期:"+list.get(index).getBuyList().get(i).getStrDate());

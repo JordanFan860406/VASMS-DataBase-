@@ -111,8 +111,9 @@ public class DownloadInsert extends JFrame implements ActionListener {
 		String memberName = memName.getSelectedItem().toString();
 		String movieName = mvName.getSelectedItem().toString();
 		String date = tfyear.getText() + "-" + tfmonth.getText() + "-" + tfday.getText();
-		ArrayList<String>temp = DB.getDownloadDB().searchID(memberName, movieName);
-		DB.getDownloadDB().insertDownload(temp.get(0), temp.get(1), date);
+		ArrayList<member>memName = DB.getMemberDB().searchAllMember(memberName);
+		ArrayList<Movie>mvName = DB.getMovieDB().searchMovie(movieName, "所有類型", "所有年代", "所有演員");
+		DB.getDownloadDB().insertDownload(memName.get(0).getID(), mvName.get(0).getID(), date);
 	}
 	
 	public void getData() throws Exception{
