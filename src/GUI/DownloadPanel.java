@@ -22,6 +22,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import DB.DB_connect;
+import Object.Buy;
+import Object.MemberBuy;
 import Object.Movie;
 
 public class DownloadPanel extends JPanel {
@@ -30,6 +32,7 @@ public class DownloadPanel extends JPanel {
 	private JRadioButton month;
 	private JComboBox movieType;
 	private JLabel lbYear;
+	ArrayList<Buy>list;
 	JList dwName;
 	DB_connect DB;
 	String year;
@@ -41,6 +44,7 @@ public class DownloadPanel extends JPanel {
 	JPanel Panel;
 	JPanel Panel1;
 	String getMvName;
+	ArrayList<MemberBuy>dataList;
 	String [] b={"所有年份", "2005", "2006", "2007", "2008", "2009", "2010", "2011",
 			"2012", "2013", "2014", "2015", "2005~2015", "2016", "2017"};
 	String [] c={"所有類型"};
@@ -110,13 +114,26 @@ public class DownloadPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					reList.removeAll();
 					year = Year.getSelectedItem().toString();
 					mvType = movieType.getSelectedItem().toString();
-					boolean check = month.isSelected();
-					ArrayList<String>tmpList = DB.getDownloadDB().searchDownload(year, check, mvType);
-					reList.setListData(tmpList.toArray());
-					dwName.removeAll();
+					if(month.isSelected() == true){
+						list = DB.getDownloadDB().searchDownloadMon(year, mvType);
+						ArrayList<String>conList = new ArrayList<String>();
+						for(int i=0 ; i<list.size() ; i++){
+							conList.add("類型:"+list.get(i).getType()+" "+"月份:"+list.get(i).getMonth()+" "+"下載次數:"+list.get(i).getCount());
+						}
+						reList.setListData(conList.toArray());
+					}
+					else if(month.isSelected()==false){
+						list = DB.getDownloadDB().searchDownloadYear(year, mvType);
+						ArrayList<String>conList = new ArrayList<String>();
+						for(int i=0 ; i<list.size() ; i++){
+							conList.add("電影名稱:"+list.get(i).getmvName()+" "+"年份:"+list.get(i).getYear()+" "+"下載次數:"+list.get(i).getCount());
+						}
+						reList.setListData(conList.toArray());
+					}
+					
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -131,7 +148,6 @@ public class DownloadPanel extends JPanel {
 		btnInsert.setBounds(650, 5, 150, 100);
 		this.add(btnInsert);
 		btnInsert.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -154,19 +170,7 @@ public class DownloadPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String[]arr = dwName.getSelectedValue().toString().split(" : ");
-				String[]arr2 = arr[1].split("  ");
 				
-				System.out.println(arr2[0] + arr[2]);
-				try {
-					ArrayList<String>seId = DB.getDownloadDB().searchID(arr2[0], arr[2]);
-					DB.getDownloadDB().deleteDownLoad(seId.get(0), arr[2]);
-					dwName.repaint();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 			
 		});
@@ -198,25 +202,16 @@ public class DownloadPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
 				if(!e.getValueIsAdjusting()){
-					int index = reList.getSelectedIndex();
-					try {
-						dwName.removeAll();
-						String[]temp = reList.getSelectedValue().toString().split(" ");
-						String str1 = temp[2];
-						String str2 = temp[6];
-						boolean check = month.isSelected();
-						ArrayList<String> rsList = DB.getDownloadDB().downloadName(str1, str2, check);
-						dwName.setListData(rsList.toArray());		
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					int index = reList.getAnchorSelectionIndex();
+					ArrayList<String>conList = new ArrayList<String>();
+					for(int i=0 ; i<list.get(index).getBuyList().size() ; i++){
+						conList.add("會員名字:"+list.get(index).getBuyList().get(i).getMember()+" "+"下載日期:"+list.get(index).getBuyList().get(i).getStrDate());
 					}
+					dwName.setListData(conList.toArray());
 				}
 			}
 			
 		});
-		
-	
 		
 		JLabel dwData = new JLabel("下載詳細資料");
 		dwData.setFont(new Font("新細明體",Font.PLAIN ,36));
@@ -232,7 +227,6 @@ public class DownloadPanel extends JPanel {
 		ArrayList<String> genresArray=DB.getGenresDB().searchGenres();
 		for(String i:genresArray){
 			movieType.addItem(i);
-			System.out.print(i);
 		}
 	}
 	
