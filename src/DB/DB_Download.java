@@ -75,7 +75,6 @@ public class DB_Download {
 			}
 		}
 		find += "group by movie_genres , month Order by count(buy.movie_id) desc";
-		System.out.println(find);
 		ResultSet rs = stmt.executeQuery(find);
 		ResultSetMetaData rm = rs.getMetaData();
 		int cnum = rm.getColumnCount();
@@ -144,10 +143,7 @@ public class DB_Download {
 	}
 	
 	public void deleteDownLoad(String memId, String mvId,String Date)throws Exception{
-		System.out.println(123);
-		System.out.println(memId+" " + mvId + " " +Date);
 		String SQL = "DELETE FROM buy where member_id='" + memId +"' and download_date='" + Date +"' and movie_id='"+mvId+"'";
 		stmt.executeUpdate(SQL);
-		System.out.println("刪除成功");
 	}
 }
